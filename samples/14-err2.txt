@@ -5,6 +5,7 @@
  glob entier i;
  glob entier i; /* erreur : double definition */
  
+ fonction principal(){
 	i = 0;
  }
  

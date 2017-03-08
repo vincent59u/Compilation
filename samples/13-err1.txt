@@ -4,6 +4,7 @@
  
  glob entier i, j = 0;
  
+ fonction entier f(entier a, entier b){
 	loc entier x;
 	
 	x=(a*2)+b-5/3 /*erreur ; attendu */
@@ -13,5 +14,6 @@
  
  fonction principal(){
 	 j = lire();
+	 ecrire(appel f(i+1,j));
  }
  
