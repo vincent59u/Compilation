@@ -2,28 +2,30 @@
  * Variables locales
  */
 
-int i, j,k;
+glob entier i, j,k;
 
-int f(){
-	int i;
+fonction entier f(){
+	loc entier i;
 	
 	i = 1;
-	j = i + g();
-	return j;
+	j = i + appel g();
+	retourner j;
 }
 
-int g(){
-	int j, l2, l3, l4;
+fonction entier g(){
+	loc entier j, l2, l3, l4;
 	
-	l2 = 2; l3 = 3; l4 = 4;
+	l2 = 2; 
+	l3 = 3; 
+	l4 = 4;
 	j = 10 + l2 + l3 + l4;
 
-	return i+j;
+	retourner i+j;
 }
 
-main(){
-	i=0;
-	j=1;
-	k=f();	
+fonction principal(){
+	i = 0;
+	j = 1;
+	k = appel f();	
 }
 

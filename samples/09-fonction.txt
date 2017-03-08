@@ -2,15 +2,15 @@
  * adressage de variable locale
  */
 
-int i = 0;
-int j;
+glob entier i = 0;
+glob entier j;
 
-int f(int a){
-	int x;
+fonction entier f(entier a){
+	loc entier x;
 	x = a+1;
-	return x;
+	retourner x;
  }
 
-void main(){
-	j = f(i);
+fonction principal(){
+	j = appel f(i);
 }

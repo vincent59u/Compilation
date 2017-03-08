@@ -2,10 +2,11 @@
  * boucle
  */
 
-int i , j;
-void main(){
-	i = 0; j = 0;
-	while (i <3){
+glob entier i , j;
+fonction principal(){
+	i = 0; 
+	j = 0;
+	tantQue (i < 3){
 		j = j + i;
 	}
  }

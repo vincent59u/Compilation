@@ -1,15 +1,15 @@
 /*
  * recursivité
  */
-int x ;
+glob entier x ;
 
-int f(int n){
-	if (n>0){
-		return 0;
+fonction entier f(entier n){
+	si (n > 0){
+		retourner 0;
 	}
-	return (n+f(n-1));
+	retourner (n+ appel f(n-1));
 }
 
-void main(){
-	x = f(5);
+fonction principal(){
+	x = appel f(5);
 }

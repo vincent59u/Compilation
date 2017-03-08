@@ -2,11 +2,12 @@
  * conditionnelle
  */
 
-int i = 3; int j;
-void main(){
-	if (i < 2){
+glob entier i = 3; 
+glob entier j;
+fonction principal(){
+	si (i < 2){
 		j = 0;
-	}else{
+	}sinon{
 		j = 1;
 	}
  }

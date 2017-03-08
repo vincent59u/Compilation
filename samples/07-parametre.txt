@@ -2,14 +2,14 @@
  * une fonction (appel)
  */
 
-int i =0;
-int j = 0;
+glob entier i =0;
+glob entier j = 0;
 
-int f(int a, int b){
-	int x, y, z;
-	return 0;
+fonction entier f(entier a, entier b){
+	loc entier x, y, z;
+	retourner 0;
  }
 
-void main(){
-	i = f(i,j); /*tester ceci*/
+fonction principal(){
+	i = appel f(i,j); /*tester ceci*/
 }

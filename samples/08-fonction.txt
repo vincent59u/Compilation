@@ -2,13 +2,13 @@
  * Une expression avec un appel
  */
 
-int i = 1;
-int j = 2;
+glob entier i = 1;
+glob entier j = 2;
 
-int f(int a){
-	return 3;
+fonction entier f(entier a){
+	retourner 3;
  }
 
-void main(){
-	i = j-(3+f(i+j));/*tester ceci*/
+fonction principal(){
+	i = j-(3+ appel f(i+j));/*tester ceci*/
 }
