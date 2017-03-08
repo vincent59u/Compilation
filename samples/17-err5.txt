@@ -2,14 +2,14 @@
  * Test de controle semantique
  */
  
- int i;
+ glob entier i;
  
- void f(int a, int b){
-	int x;
+ fonction f(entier a, entier b){
+	loc entier x;
 	x=0;
  }
  
- void main(){
-	f(i); /* erreur : nombre de parametres */
+ fonction principal(){
+	appel f(i); /* erreur : nombre de parametres */
  }
  

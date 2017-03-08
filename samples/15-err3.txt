@@ -2,7 +2,7 @@
  * Test de controle semantique
  */
  
- void main(){
+ fonction principal(){
 	i = 0; /* erreur : variable non definie */
  }
  

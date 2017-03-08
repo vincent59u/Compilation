@@ -2,14 +2,14 @@
  * Test de controle semantique 
  */
  
- int i;
+ glob entier i;
  
- void f(){
-	int x;
+ fonction f(){
+	loc entier x;
 	x=0;
  }
  
- void main(){
-	i = i + f(); /* erreur : compatibilite de type */
+ fonction principal(){
+	i = i + appel f(); /* erreur : compatibilite de type */
  }
  
