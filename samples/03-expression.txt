@@ -1,0 +1,10 @@
+/*
+ * Une expression simple
+ */
+
+glob entier i;
+glob entier j = 1;
+
+fonction principal(){
+	i = 6+j/3; /*tester ceci*/
+}

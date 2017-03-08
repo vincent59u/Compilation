@@ -1,0 +1,9 @@
+/*
+ * Le plus petit programme
+ */
+
+ 
+ fonction principal(){
+ }
+
+ 

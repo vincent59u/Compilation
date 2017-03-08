@@ -1,0 +1,12 @@
+/*
+ * Une expression arithméthique
+ */
+ 
+ glob entier x;
+ glob entier a = 1;
+ glob entier b = 2;
+  
+ fonction principal(){
+	x = (a*2)+b-5/3;
+ }
+ 

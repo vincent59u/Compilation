@@ -1,0 +1,11 @@
+/*
+ * Test d'une expression arithmétique
+ */
+ 
+glob entier i, j;
+fonction principal(){
+	i = 0;
+	j = (2+i) - (3+i);
+}
+
+ 

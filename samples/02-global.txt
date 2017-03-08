@@ -1,0 +1,13 @@
+/*
+ * Test génération de code : variables globales
+ */
+ 
+ glob entier i = 0;
+ glob entier j, k;
+ 
+ fonction principal(){
+	k = 1;
+	j = k;
+	k = i;
+ }
+ 
