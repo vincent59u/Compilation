@@ -9,35 +9,92 @@ package fr.ul.miage.projet.generated;
 
 /* la grammaire */
 
-terminal PO, PF, AO, AF, EG, PV, DIFF, PLUS, PP, MM, MOINS, MUL, DIV, SUP, SUPEG, INF, INFEG, EGEG;
-terminal GLOB, LOC, ENTIER, FONCTION, APPEL, LIRE, ECR, RET, SI, SINON, TQ, POUR, COM, COMMULTI, NUM, NOM;
+terminal PO, PF, AO, AF, EG, PV, DIFF, PLUS, PP, MM, MOINS, MUL, DIV, SUP, SUPEG, INF, INFEG, EGEG, V, PRINC;
+terminal GLOB, LOC, ENTIER, FONCTION, APPEL, LIRE, ECR, RET, SI, SINON, TQ, POUR, COM, COMMULTI, NUM, NOM, OPBOOL;
 
-non terminal prog, affectation, expression, instruction, valeur, fonction, operation, operateur;
+non terminal prog, affectation, expression, instruction, valeur, fonction, operation, operateur, block;
+non terminal parametre, declaration, entree, blockFonction, fonctionP, intermediaire, retourner, condition;
+non terminal conditionnelle, boucle;
 
-
+/* Prog c'est un block, block c'est instruction ou comm, suivi d'un block ou de rien*/
 start with prog;
 
-prog 	::= affectation
+prog 	::= block fonctionP
 	 	;
+					
+block ::= instruction block
+		| COM block
+		| COMMULTI block
+		|
+		;
+
+instruction ::= declaration instruction
+			| affectation instruction
+			| fonction instruction
+			|
+			;
+
+fonctionP ::= FONCTION PRINC PO PF AO blockFonction AF;
+ 	
+fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction retourner AF
+			| FONCTION NOM PO parametre PF AO blockFonction AF
+			;
+
+parametre ::= entree
+			| 
+			;
+
+entree ::= ENTIER NOM
+		| entree V ENTIER NOM
+		;
+
+blockFonction ::= declaration blockFonction
+				| affectation blockFonction
+				| conditionnelle blockFonction
+				| boucle blockFonction
+				|
+				;
+
+retourner ::= RET PV
+			| RET operation PV
+			| RET expression PV
+			;
 
 affectation ::= NOM EG valeur PV
+			| GLOB ENTIER NOM EG valeur PV
+			| LOC ENTIER NOM EG valeur PV
+			;
+
+declaration ::= GLOB ENTIER NOM PV
+			| LOC ENTIER NOM PV 
 			;
 
 valeur 	::= instruction 
 		| expression
 		;
-		
-instruction ::= operation
-			;
-			
-operation 	::= expression operateur expression
+
+operation ::= expression operateur expression
+			| operation operateur operation
+			| expression operateur operation
+			| operation operateur expression
 			;		
-		
+
 expression	::= NOM
 		| NUM
 		; 			
-			
+
 operateur	::= PLUS
 			| MOINS	
 			| MUL
-			| DIV				
+			| DIV	
+			;
+
+conditionnelle ::= SI PO condition PF AO blockFonction AF
+				| SI PO condition PF AO blockFonction AF SINON AO blockFonction AF
+				;
+
+condition ::= expression OPBOOL expression
+			;
+
+boucle ::= TQ PO condition PF AO blockFonction AF 
+		;

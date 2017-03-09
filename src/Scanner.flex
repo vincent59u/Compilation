@@ -24,6 +24,7 @@ COM = \/\/[^\n]*
 COMMULTI = \/\*(([^*])|(\*[^/]))*\*\/
 NOM = [a-zA-Z]+[\w]*
 SEP = [ \t]
+OPBOOL = ==|<|>|<=|>=|=\!|\!
 
 
 %%
@@ -36,6 +37,7 @@ SEP = [ \t]
 "}"			{ return new Symbol(sym.AF); }
 "="			{ return new Symbol(sym.EG); }
 ";"			{ return new Symbol(sym.PV); }
+","			{ return new Symbol(sym.V); }
 "!="		{ return new Symbol(sym.DIFF); }
 "+"			{ return new Symbol(sym.PLUS); }
 "++"        { return new Symbol(sym.PP); }
@@ -60,10 +62,12 @@ SEP = [ \t]
 "sinon"		{ return new Symbol(sym.SINON); }
 "tantQue"	{ return new Symbol(sym.TQ); }
 "pour"		{ return new Symbol(sym.POUR); }
+"principal"	{ return new Symbol(sym.PRINC); }
 {COM}		{ return new Symbol(sym.COM); }
 {COMMULTI}	{ return new Symbol(sym.COMMULTI); }
 {NUM}		{ return new Symbol(sym.NUM); }
 {NOM}		{ return new Symbol(sym.NOM); }
+{OPBOOL}		{ return new Symbol(sym.OPBOOL); }
 {SEP}		{ ; }
 
 .			{ return null; }
