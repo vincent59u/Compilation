@@ -5,6 +5,9 @@ package fr.ul.miage.projet;
 
 import java.io.FileReader;
 
+import fr.ul.miage.projet.generated.ParserCup;
+import fr.ul.miage.projet.generated.Yylex;
+
 /**
  * @authors Matthieu VINCENT, Martin LEMAITRE, Loic REISDOERFER, Mervine LIEFFROY
  *

@@ -8,3 +8,36 @@
 package fr.ul.miage.projet.generated;
 
 /* la grammaire */
+
+terminal PO, PF, AO, AF, EG, PV, DIFF, PLUS, PP, MM, MOINS, MUL, DIV, SUP, SUPEG, INF, INFEG, EGEG;
+terminal GLOB, LOC, ENTIER, FONCTION, APPEL, LIRE, ECR, RET, SI, SINON, TQ, POUR, COM, COMMULTI, NUM, NOM;
+
+non terminal prog, affectation, expression, instruction, valeur, fonction, operation, operateur;
+
+
+start with prog;
+
+prog 	::= affectation
+	 	;
+
+affectation ::= NOM EG valeur PV
+			;
+
+valeur 	::= instruction 
+		| expression
+		;
+		
+instruction ::= operation
+			;
+			
+operation 	::= expression operateur expression
+			;		
+		
+expression	::= NOM
+		| NUM
+		; 			
+			
+operateur	::= PLUS
+			| MOINS	
+			| MUL
+			| DIV				
