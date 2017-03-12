@@ -24,7 +24,7 @@ COM = \/\/[^\n]*
 COMMULTI = \/\*(([^*])|(\*[^/]))*\*\/
 NOM = [a-zA-Z]+[\w]*
 SEP = [ \t]
-OPBOOL = ==|<|>|<=|>=|=\!|\!
+OPBOOL = ==|<|>|<=|>=|\!=|\!
 
 
 %%
@@ -67,7 +67,7 @@ OPBOOL = ==|<|>|<=|>=|=\!|\!
 {COMMULTI}	{ return new Symbol(sym.COMMULTI); }
 {NUM}		{ return new Symbol(sym.NUM); }
 {NOM}		{ return new Symbol(sym.NOM); }
-{OPBOOL}		{ return new Symbol(sym.OPBOOL); }
+{OPBOOL}	{ return new Symbol(sym.OPBOOL); }
 {SEP}		{ ; }
 
 .			{ return null; }

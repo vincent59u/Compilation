@@ -9,8 +9,10 @@ package fr.ul.miage.projet.generated;
 
 /* la grammaire */
 
-terminal PO, PF, AO, AF, EG, PV, DIFF, PLUS, PP, MM, MOINS, MUL, DIV, SUP, SUPEG, INF, INFEG, EGEG, V, PRINC;
-terminal GLOB, LOC, ENTIER, FONCTION, APPEL, LIRE, ECR, RET, SI, SINON, TQ, POUR, COM, COMMULTI, NUM, NOM, OPBOOL;
+terminal PO, PF, AO, AF, EG, PV, DIFF, PLUS, PP, MM, MOINS, MUL, DIV;
+terminal SUP, SUPEG, INF, INFEG, EGEG, V, PRINC;
+terminal GLOB, LOC, ENTIER, FONCTION, APPEL, LIRE, ECR, RET, SI, SINON;
+terminal TQ, POUR, COM, COMMULTI, NUM, NOM, OPBOOL;
 
 non terminal prog, affectation, expression, instruction, valeur, fonction, operation, operateur, block;
 non terminal parametre, declaration, entree, blockFonction, fonctionP, intermediaire, retourner, condition;
@@ -25,13 +27,11 @@ prog 	::= block fonctionP
 block ::= instruction block
 		| COM block
 		| COMMULTI block
-		|
 		;
 
 instruction ::= declaration instruction
 			| affectation instruction
 			| fonction instruction
-			|
 			;
 
 fonctionP ::= FONCTION PRINC PO PF AO blockFonction AF;
@@ -41,7 +41,6 @@ fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction retourner AF
 			;
 
 parametre ::= entree
-			| 
 			;
 
 entree ::= ENTIER NOM
@@ -52,7 +51,6 @@ blockFonction ::= declaration blockFonction
 				| affectation blockFonction
 				| conditionnelle blockFonction
 				| boucle blockFonction
-				|
 				;
 
 retourner ::= RET PV
