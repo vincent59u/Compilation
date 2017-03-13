@@ -1,98 +1,95 @@
-/*
- * Projet de compilation L3 Miage :
- * Ecriture d'un compilateur
- *
- * auteurs : Matthieu VINCENT, Martin LEMAITRE, Loic REISDOERFER, Mervine LIEFFROY
- * (c) 2017
- */ 
-package fr.ul.miage.projet.generated;
+
+package fr.ul.miage.exemple.generated;
+import java.util.GregorianCalendar;
+import java.util.ArrayList;
+
+action code {:
+	void afficherResultat(){
+		System.out.println("Nombre d'utilisateur : ");
+	}
+:}
 
 /* la grammaire */
+terminal COM, FONCTION, PRINC, PF, PO, AO, AF, PV, V, EG, GLOB, LOC, ENTIER, NOM, NUM, PLUS, MOINS, DIV, MUL, OP, RET;
+non terminal prog, block, fonctionP, blockFonction, instruction, affectation, declaration, valeur, nom, retourner; 
+non terminal operation, expression, operateur, fonction, parametre, declarationI;
 
-terminal PO, PF, AO, AF, EG, PV, DIFF, PLUS, PP, MM, MOINS, MUL, DIV;
-terminal V, PRINC;
-terminal GLOB, LOC, ENTIER, FONCTION, APPEL, LIRE, ECR, RET, SI, SINON;
-terminal TQ, POUR, COM, COMMULTI, NUM, NOM, OPBOOL;
 
-non terminal prog, affectation, expression, instruction, valeur, fonction, operation, operateur, block;
-non terminal parametre, declaration, entree, blockFonction, fonctionP, intermediaire, retourner, condition;
-non terminal conditionnelle, boucle;
-
-/* Prog c'est un block, block c'est instruction ou comm, suivi d'un block ou de rien*/
 start with prog;
 
 prog 	::= block fonctionP
 	 	;
-					
-block ::= instruction block
-		| COM block
-		| COMMULTI block
+	 	
+declaration ::= GLOB ENTIER nom EG valeur PV block
+		| GLOB ENTIER nom PV block
 		;
-
-instruction ::= declaration instruction
-			| affectation instruction
-			| fonction instruction
-			;
-
-fonctionP ::= FONCTION PRINC PO PF AO blockFonction AF;
- 	
-fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction retourner AF
-			| FONCTION NOM PO parametre PF AO blockFonction AF
-			;
-
-parametre ::= entree
-			;
-
-entree ::= ENTIER NOM
-		| entree V ENTIER NOM
+		
+block	::= COM block
+		| declaration block
+		|
 		;
+		
+nom ::= NOM
+	| NOM V nom 
+	;
 
-blockFonction ::= declaration blockFonction
-				| affectation blockFonction
-				| conditionnelle blockFonction
-				| boucle blockFonction
-				;
-
-retourner ::= RET PV
-			| RET operation PV
-			| RET expression PV
-			;
-
-affectation ::= NOM EG valeur PV
-			| GLOB ENTIER NOM EG valeur PV
-			| LOC ENTIER NOM EG valeur PV
-			;
-
-declaration ::= GLOB ENTIER NOM PV
-			| LOC ENTIER NOM PV 
-			;
-
-valeur 	::= instruction 
-		| expression
+valeur ::= NUM
+		| NOM
 		;
+		
 
-operation ::= expression operateur expression
-			| operation operateur operation
-			| expression operateur operation
-			| operation operateur expression
-			;		
-
-expression	::= NOM
-		| NUM
-		; 			
 
 operateur	::= PLUS
 			| MOINS	
 			| MUL
 			| DIV	
+			|
 			;
 
-conditionnelle ::= SI PO condition PF AO blockFonction AF
-				| SI PO condition PF AO blockFonction AF SINON AO blockFonction AF
+operation ::= OP operateur operation
+			| PO operation PF operateur operation
+			| OP
+			|
+			;
+
+affectation ::= NOM EG valeur PV
+				| NOM EG operation PV
 				;
 
-condition ::= expression OPBOOL expression
+declarationI ::= LOC ENTIER NOM EG valeur PV
+				| LOC ENTIER NOM PV
+				;
+
+
+blockFonction ::= declarationI blockFonction
+				| COM blockFonction
+				| affectation blockFonction
+				|
+				;
+				
+fonctionP ::= FONCTION PRINC PO PF AO blockFonction AF;
+
+fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction retourner AF
+			| FONCTION NOM PO parametre PF AO blockFonction AF
+			;
+				
+
+			
+parametre ::= ENTIER NOM
+			| ENTIER NOM V parametre
+			|
+			;
+			
+retourner ::= RET PV
+			| RET operation PV
 			;
 
-boucle ::= TQ PO condition PF AO blockFonction AF 
-		;
+
+			
+
+
+
+			
+			
+
+		

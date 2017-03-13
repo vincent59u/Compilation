@@ -1,0 +1,95 @@
+
+package fr.ul.miage.exemple.generated;
+import java.util.GregorianCalendar;
+import java.util.ArrayList;
+
+action code {:
+	void afficherResultat(){
+		System.out.println("Nombre d'utilisateur : ");
+	}
+:}
+
+/* la grammaire */
+terminal COM, FONCTION, PRINC, PF, PO, AO, AF, PV, V, EG, GLOB, LOC, ENTIER, NOM, NUM, PLUS, MOINS, DIV, MUL, OP, RET;
+non terminal prog, block, fonctionP, blockFonction, instruction, affectation, declaration, valeur, nom, retourner; 
+non terminal operation, expression, operateur, fonction, parametre, declarationI;
+
+
+start with prog;
+
+prog 	::= block fonctionP
+	 	;
+	 	
+declaration ::= GLOB ENTIER nom EG valeur PV block
+		| GLOB ENTIER nom PV block
+		;
+		
+block	::= COM block
+		| declaration block
+		|
+		;
+		
+nom ::= NOM
+	| NOM V nom 
+	;
+
+valeur ::= NUM
+		| NOM
+		;
+		
+
+
+operateur	::= PLUS
+			| MOINS	
+			| MUL
+			| DIV	
+			|
+			;
+
+operation ::= OP operateur operation
+			| PO operation PF operateur operation
+			| OP
+			|
+			;
+
+affectation ::= NOM EG valeur PV
+				| NOM EG operation PV
+				;
+
+declarationI ::= LOC ENTIER NOM EG valeur PV
+				| LOC ENTIER NOM PV
+				;
+
+
+blockFonction ::= declarationI blockFonction
+				| COM blockFonction
+				| affectation blockFonction
+				|
+				;
+				
+fonctionP ::= FONCTION PRINC PO PF AO blockFonction AF;
+
+fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction retourner AF
+			| FONCTION NOM PO parametre PF AO blockFonction AF
+			;
+				
+
+			
+parametre ::= ENTIER NOM
+			| ENTIER NOM V parametre
+			|
+			;
+			
+retourner ::= RET PV
+			| RET operation PV
+			;
+
+
+			
+
+
+
+			
+			
+
+		
