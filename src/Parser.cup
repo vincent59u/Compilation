@@ -10,7 +10,7 @@ package fr.ul.miage.projet.generated;
 /* la grammaire */
 
 terminal PO, PF, AO, AF, EG, PV, DIFF, PLUS, PP, MM, MOINS, MUL, DIV;
-terminal SUP, SUPEG, INF, INFEG, EGEG, V, PRINC;
+terminal V, PRINC;
 terminal GLOB, LOC, ENTIER, FONCTION, APPEL, LIRE, ECR, RET, SI, SINON;
 terminal TQ, POUR, COM, COMMULTI, NUM, NOM, OPBOOL;
 

@@ -23,7 +23,7 @@ NUM = [0-9]+
 COM = \/\/[^\n]*
 COMMULTI = \/\*(([^*])|(\*[^/]))*\*\/
 NOM = [a-zA-Z]+[\w]*
-SEP = [ \t]
+SEP = [ \t]|\n|\r|\r\n
 OPBOOL = ==|<|>|<=|>=|\!=|\!
 
 
@@ -45,11 +45,6 @@ OPBOOL = ==|<|>|<=|>=|\!=|\!
 "--"		{ return new Symbol(sym.MM); }
 "*"			{ return new Symbol(sym.MUL); }
 "/"			{ return new Symbol(sym.DIV); }
-">"			{ return new Symbol(sym.SUP); }
-"<"			{ return new Symbol(sym.INF); }
-">="		{ return new Symbol(sym.SUPEG); }
-"<="		{ return new Symbol(sym.INFEG); }
-"=="		{ return new Symbol(sym.EGEG); }
 "loc"		{ return new Symbol(sym.LOC); }
 "glob"		{ return new Symbol(sym.GLOB); }
 "entier"    { return new Symbol(sym.ENTIER); }
