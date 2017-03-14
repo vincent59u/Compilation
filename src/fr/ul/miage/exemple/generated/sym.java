@@ -8,6 +8,7 @@ package fr.ul.miage.exemple.generated;
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
+  public static final int RET = 22;
   public static final int PRINC = 4;
   public static final int GLOB = 12;
   public static final int PLUS = 17;
@@ -30,9 +31,6 @@ public interface sym {
   public static final int PF = 5;
   public static final int MUL = 20;
   public static final int EG = 11;
-  public static final int RET = 21;
-  public static final int FONCTIONE = 22;
-  public static final int FONCTIONP = 23;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -56,9 +54,7 @@ public interface sym {
   "DIV",
   "MUL",
   "OP",
-  "RET",
-  "FONCTIONE",
-  "FONCTIONP"
+  "RET"
   };
 }
 

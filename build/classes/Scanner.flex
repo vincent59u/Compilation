@@ -16,7 +16,7 @@ import java_cup.runtime.Symbol;
 
 NUM = [0-9]+
 COM = \/\/[^\n]*|\/\*(([^*])|(\*[^/]))*\*\/
-NOM = [a-zA-Z]+[\w]*
+NOM = [a-zA-Z]+[\w]*([a-zA-Z]|[0-9])*
 SEP = [ \t]|\n|\r|\r\n
 OP	= ([0-9]+|[a-zA-Z]+)([\+\-\/\*]([0-9]+|[a-zA-Z]+))*
 

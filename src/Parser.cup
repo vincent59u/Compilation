@@ -11,22 +11,23 @@ action code {:
 
 /* la grammaire */
 terminal COM, FONCTION, PRINC, PF, PO, AO, AF, PV, V, EG, GLOB, LOC, ENTIER, NOM, NUM, PLUS, MOINS, DIV, MUL, OP, RET;
-non terminal prog, block, fonctionP, blockFonction, instruction, affectation, declaration, valeur, nom, retourner; 
-non terminal operation, expression, operateur, fonction, parametre, declarationI;
+non terminal prog, block, fonctionP, blockFonction, affectation, declaration, valeur, nom, retourner; 
+non terminal operation, operateur, fonction, parametre, declarationI;
 
 
 start with prog;
 
-prog 	::= block fonctionP
+prog 	::= block 
 	 	;
 	 	
-declaration ::= GLOB ENTIER nom EG valeur PV block
-		| GLOB ENTIER nom PV block
+declaration ::= GLOB ENTIER nom EG valeur PV
+		| GLOB ENTIER nom PV
 		;
 		
 block	::= COM block
 		| declaration block
-		|
+		| fonction block
+		| fonctionP
 		;
 		
 nom ::= NOM
@@ -36,30 +37,25 @@ nom ::= NOM
 valeur ::= NUM
 		| NOM
 		;
-		
-
 
 operateur	::= PLUS
 			| MOINS	
 			| MUL
 			| DIV	
-			|
 			;
 
 operation ::= OP operateur operation
 			| PO operation PF operateur operation
 			| OP
-			|
 			;
 
 affectation ::= NOM EG valeur PV
 				| NOM EG operation PV
 				;
 
-declarationI ::= LOC ENTIER NOM EG valeur PV
-				| LOC ENTIER NOM PV
+declarationI ::= LOC ENTIER nom EG valeur PV
+				| LOC ENTIER nom PV
 				;
-
 
 blockFonction ::= declarationI blockFonction
 				| COM blockFonction
@@ -72,8 +68,6 @@ fonctionP ::= FONCTION PRINC PO PF AO blockFonction AF;
 fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction retourner AF
 			| FONCTION NOM PO parametre PF AO blockFonction AF
 			;
-				
-
 			
 parametre ::= ENTIER NOM
 			| ENTIER NOM V parametre
@@ -82,14 +76,7 @@ parametre ::= ENTIER NOM
 			
 retourner ::= RET PV
 			| RET operation PV
-			;
-
-
-			
-
-
-
-			
-			
+			| RET valeur PV
+			;			
 
 		
