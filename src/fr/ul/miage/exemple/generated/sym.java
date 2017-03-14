@@ -12,6 +12,7 @@ public interface sym {
   public static final int PRINC = 4;
   public static final int GLOB = 12;
   public static final int PLUS = 17;
+  public static final int APPEL = 23;
   public static final int V = 10;
   public static final int OP = 21;
   public static final int FONCTION = 3;
@@ -54,7 +55,8 @@ public interface sym {
   "DIV",
   "MUL",
   "OP",
-  "RET"
+  "RET",
+  "APPEL"
   };
 }
 

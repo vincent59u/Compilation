@@ -11,8 +11,9 @@ action code {:
 
 /* la grammaire */
 terminal COM, FONCTION, PRINC, PF, PO, AO, AF, PV, V, EG, GLOB, LOC, ENTIER, NOM, NUM, PLUS, MOINS, DIV, MUL, OP, RET;
-non terminal prog, block, fonctionP, blockFonction, affectation, declaration, valeur, nom, retourner; 
-non terminal operation, operateur, fonction, parametre, declarationI;
+terminal APPEL;
+non terminal prog, block, fonctionP, blockFonction, affectation, declaration, valeur, retourner; 
+non terminal operation, operateur, fonction, parametre, declarationI, appel, parametreA, parametreD;
 
 
 start with prog;
@@ -20,8 +21,9 @@ start with prog;
 prog 	::= block 
 	 	;
 	 	
-declaration ::= GLOB ENTIER nom EG valeur PV
-		| GLOB ENTIER nom PV
+declaration ::= GLOB ENTIER parametreD EG operation PV
+		| GLOB ENTIER parametreD EG valeur PV
+		| GLOB ENTIER parametreD PV
 		;
 		
 block	::= COM block
@@ -29,10 +31,6 @@ block	::= COM block
 		| fonction block
 		| fonctionP
 		;
-		
-nom ::= NOM
-	| NOM V nom 
-	;
 
 valeur ::= NUM
 		| NOM
@@ -45,16 +43,22 @@ operateur	::= PLUS
 			;
 
 operation ::= OP operateur operation
-			| PO operation PF operateur operation
 			| OP
+			| NOM operateur operation
+			| appel operateur operation
+			| appel 
+			| NUM operateur operation
+			| PO operation PF operateur operation
+			| PO operation PF
 			;
 
-affectation ::= NOM EG valeur PV
-				| NOM EG operation PV
+affectation ::= NOM EG operation PV
+			| NOM EG valeur PV
 				;
 
-declarationI ::= LOC ENTIER nom EG valeur PV
-				| LOC ENTIER nom PV
+declarationI ::= LOC ENTIER parametreD EG operation PV
+				| LOC ENTIER parametreD EG valeur PV
+				| LOC ENTIER parametreD PV
 				;
 
 blockFonction ::= declarationI blockFonction
@@ -69,14 +73,31 @@ fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction retourner AF
 			| FONCTION NOM PO parametre PF AO blockFonction AF
 			;
 			
-parametre ::= ENTIER NOM
+parametre ::=  operation V parametre
+			| operation
+			| ENTIER NOM
 			| ENTIER NOM V parametre
+			| NOM V parametre
+			| NOM
 			|
 			;
 			
-retourner ::= RET PV
-			| RET operation PV
-			| RET valeur PV
+parametreA ::= operation V parametreA
+			| operation
+			| NOM V parametreA
+			| NOM
+			;
+			
+parametreD ::= NOM V parametreD
+			| NOM
+			;
+
+retourner ::= RET operation PV
+			| RET NOM PV
+			| RET NUM PV
 			;			
 
+appel ::= APPEL NOM PO parametreA PF
+		| APPEL NOM PO PF
+		;
 		

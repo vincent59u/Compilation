@@ -10,5 +10,5 @@ fonction entier f(entier a){
  }
 
 fonction principal(){
-	i = j-(3+ appel f(i+j));/*tester ceci*/
+	i = j-(3+ appel f(i));/*tester ceci*/
 }

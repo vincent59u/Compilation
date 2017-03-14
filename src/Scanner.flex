@@ -43,7 +43,7 @@ OP	= ([0-9]+|[a-zA-Z]+)([\+\-\/\*]([0-9]+|[a-zA-Z]+))*
 "retourner" { return new Symbol(sym.RET); }
 "glob"		{ return new Symbol(sym.GLOB); }
 "entier"    { return new Symbol(sym.ENTIER); }
-
+"appel"		{ return new Symbol(sym.APPEL); }
 "fonction"	{ return new Symbol(sym.FONCTION); }
 "principal"	{ return new Symbol(sym.PRINC); }
 
