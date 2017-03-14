@@ -12,8 +12,10 @@ public interface sym {
   public static final int PRINC = 4;
   public static final int GLOB = 12;
   public static final int PLUS = 17;
+  public static final int LIRE = 28;
   public static final int APPEL = 23;
   public static final int V = 10;
+  public static final int ECRIRE = 29;
   public static final int OP = 21;
   public static final int FONCTION = 3;
   public static final int COM = 2;
@@ -22,14 +24,18 @@ public interface sym {
   public static final int MOINS = 18;
   public static final int AO = 7;
   public static final int NUM = 16;
+  public static final int SINON = 25;
   public static final int LOC = 13;
   public static final int PO = 6;
   public static final int ENTIER = 14;
   public static final int EOF = 0;
   public static final int DIV = 19;
   public static final int AF = 8;
+  public static final int OPBOOL = 26;
+  public static final int SI = 24;
   public static final int error = 1;
   public static final int PF = 5;
+  public static final int TQ = 27;
   public static final int MUL = 20;
   public static final int EG = 11;
   public static final String[] terminalNames = new String[] {
@@ -56,7 +62,13 @@ public interface sym {
   "MUL",
   "OP",
   "RET",
-  "APPEL"
+  "APPEL",
+  "SI",
+  "SINON",
+  "OPBOOL",
+  "TQ",
+  "LIRE",
+  "ECRIRE"
   };
 }
 

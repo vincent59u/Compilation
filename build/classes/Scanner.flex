@@ -19,6 +19,7 @@ COM = \/\/[^\n]*|\/\*(([^*])|(\*[^/]))*\*\/
 NOM = [a-zA-Z]+[\w]*([a-zA-Z]|[0-9])*
 SEP = [ \t]|\n|\r|\r\n
 OP	= ([0-9]+|[a-zA-Z]+)([\+\-\/\*]([0-9]+|[a-zA-Z]+))*
+OPBOOL = ==|<|>|<=|>=|\!=|\! 
 
 %%
 
@@ -39,6 +40,11 @@ OP	= ([0-9]+|[a-zA-Z]+)([\+\-\/\*]([0-9]+|[a-zA-Z]+))*
 ";"			{ return new Symbol(sym.PV); }
 ","			{ return new Symbol(sym.V); }
 
+"ecrire"	{ return new Symbol(sym.ECRIRE); }
+"lire()"	{ return new Symbol(sym.LIRE); }
+"tantQue"	{ return new Symbol(sym.TQ); }
+"si"		{ return new Symbol(sym.SI); }
+"sinon"		{ return new Symbol(sym.SINON); }
 "loc"		{ return new Symbol(sym.LOC); }
 "retourner" { return new Symbol(sym.RET); }
 "glob"		{ return new Symbol(sym.GLOB); }
@@ -52,6 +58,7 @@ OP	= ([0-9]+|[a-zA-Z]+)([\+\-\/\*]([0-9]+|[a-zA-Z]+))*
 {NOM}		{ return new Symbol(sym.NOM); }
 {COM}		{ return new Symbol(sym.COM); }
 {OP}		{ return new Symbol(sym.OP); }
+{OPBOOL}	{ return new Symbol(sym.OPBOOL);}
 {SEP}		{ ; }
 
 .			{ return null; }
