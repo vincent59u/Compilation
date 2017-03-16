@@ -7,7 +7,7 @@
  fonction entier f(entier a, entier b){
 	loc entier x;
 	
-	x=(a*2)+b-5/3 /*erreur ; attendu */
+	x=(a*2)+b-5/3; /*erreur ; attendu */
 	
 	retourner x+2;
  }

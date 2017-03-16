@@ -1,17 +1,17 @@
+/*
+ * Projet de compilation L3 Miage :
+ * Ecriture d'un compilateur
+ *
+ * auteurs : Matthieu VINCENT, Martin LEMAITRE, Loic REISDOERFER, Mervine LIEFFROY
+ * (c) 2017
+ */ 
 
-package fr.ul.miage.exemple.generated;
-import java.util.GregorianCalendar;
-import java.util.ArrayList;
-
-action code {:
-	void afficherResultat(){
-		System.out.println("Nombre d'utilisateur : ");
-	}
-:}
+package fr.ul.miage.projet.generated;
 
 /* la grammaire */
 terminal COM, FONCTION, PRINC, PF, PO, AO, AF, PV, V, EG, GLOB, LOC, ENTIER, NOM, NUM, PLUS, MOINS, DIV, MUL, OP, RET;
 terminal APPEL, SI, SINON, OPBOOL, TQ, LIRE, ECRIRE;
+
 non terminal prog, block, fonctionP, blockFonction, affectation, declaration, valeur, retourner, conditionnelle, condition; 
 non terminal operation, operateur, fonction, parametre, declarationI, appel, parametreA, parametreD, boucle, ecrire;
 
@@ -22,7 +22,7 @@ start with prog;
 prog 	::= block 
 	 	;
 
-//Un block constitue la partie "hors mÈthode" du programme et permet de placer chaque ÈlÈment	
+//Un block constitue la partie "hors m√©thode" du programme et permet de placer chaque √©l√©ment	
 block	::= COM block
 		| declaration block
 		| fonction block
@@ -32,24 +32,24 @@ block	::= COM block
 		| fonctionP
 		;
 
-//ReprÈsente la declaration d'une variable global uniquement dans le block "hors mÈthodes"
+//Repr√©sente la declaration d'une variable global uniquement dans le block "hors m√©thodes"
 declaration ::= GLOB ENTIER parametreD EG operation PV
-		| GLOB ENTIER parametreD EG valeur PV
-		| GLOB ENTIER parametreD PV
-		;
+			| GLOB ENTIER parametreD EG valeur PV
+			| GLOB ENTIER parametreD PV
+			;
 		
-//ReprÈsente les variables dÈcrite lors de leurs dÈclaration (ex : "glob entier i;" OU "glob entier	i, j, k;")
-parametreD ::= NOM V parametreD
+//Repr√©sente les variables d√©crite lors de leurs dÔøΩclaration (ex : "glob entier i;" OU "glob entier	i, j, k;")
+parametreD 	::= NOM V parametreD
 			| NOM
 			;
 
-//Permet de sÈlectionner uniquement des atomes du programme
-valeur ::= NUM
+//Permet de s√©lectionner uniquement des atomes du programme
+valeur 	::= NUM
 		| NOM
 		;
 		
-//Operation reprÈsente tous les calculs rÈalisablent dans le programme
-operation ::= OP operateur operation
+//Operation repr√©sente tous les calculs r√©alisablent dans le programme
+operation 	::= OP operateur operation
 			| OP
 			| NOM operateur operation
 			| NOM operateur valeur
@@ -61,9 +61,10 @@ operation ::= OP operateur operation
 			| PO operation PF
 			| LIRE operateur operation
 			| LIRE
+			| PV
 			;
 
-//DÈtermine les operateurs que la grammaire	accepte
+//D√©termine les operateurs que la grammaire	accepte
 operateur	::= PLUS
 			| MOINS	
 			| MUL
@@ -73,18 +74,18 @@ operateur	::= PLUS
 //Represente l'affectation d'une valeur oud'un calcul a une variable
 affectation ::= NOM EG operation PV
 			| NOM EG valeur PV
-				;
+			;
 
 //Represente la fonction principal, obligatoire dans chaque programme (voir block)		
 fonctionP ::= FONCTION PRINC PO PF AO blockFonction AF;
 
 //Represente les methodes du programme
-fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction AF
+fonction 	::= FONCTION ENTIER NOM PO parametre PF AO blockFonction AF
 			| FONCTION NOM PO parametre PF AO blockFonction AF
 			;
 
-//Represente les parametres d'une fonction ‡ la creation
-parametre ::=  operation V parametre
+//Represente les parametres d'une fonction √† la creation
+parametre 	::=  operation V parametre
 			| operation
 			| ENTIER NOM
 			| ENTIER NOM V parametre
@@ -92,63 +93,63 @@ parametre ::=  operation V parametre
 			| NOM
 			|
 			;
-/*"blockFonction" a le meme role que "block", ‡ la diffÈrence qu'il ne peut y avoir de fonction principal ‡ l'intÈrieur.
- * Utiliser pour le contenu des fonctions*/
-blockFonction ::= declarationI blockFonction
+			
+/* 
+ *"blockFonction" a le meme role que "block", √† la diff√©rence qu'il ne peut y avoir de fonction principal √† l'int√©rieur.
+ * Utiliser pour le contenu des fonctions
+ */
+blockFonction 	::= declarationI blockFonction
 				| COM blockFonction
 				| affectation blockFonction
 				| conditionnelle blockFonction
 				| boucle blockFonction
 				| retourner blockFonction
+				| operation blockFonction
 				| ecrire
 				|
 				;
 
-//Represente la declaration de variables locales dans une methode
-declarationI ::= LOC ENTIER parametreD EG operation PV
+//Repr√©sente la declaration de variables locales dans une methode
+declarationI 	::= LOC ENTIER parametreD EG operation PV
 				| LOC ENTIER parametreD EG valeur PV
 				| LOC ENTIER parametreD PV
 				;
 
-//Represente le SI ... ALORS ...
-conditionnelle ::= SI PO condition PF AO blockFonction AF
+//Repr√©sente le bloc SI ... ALORS ...
+conditionnelle 	::= SI PO condition PF AO blockFonction AF
 				| SI PO condition PF AO blockFonction AF SINON AO blockFonction AF
 				;
 
-//Represente les diffÈrentes formes d'une expression booleenne dans nos programmes
-condition ::= valeur OPBOOL valeur
+//Repr√©sente les diff√©rentes formes d'une expression booleenne dans nos programmes
+condition 	::= valeur OPBOOL valeur
 			| valeur OPBOOL operation
 			| operation OPBOOL valeur
 			| operation OPBOOL operation
 			;
 			
-//Represente la boucle Tant Que			
-boucle ::= TQ PO condition PF AO blockFonction AF 
+//Repr√©sente la boucle Tant Que			
+boucle 	::= TQ PO condition PF AO blockFonction AF 
 		;
 
 //La fonction ecrire
-ecrire ::= ECRIRE PO operation PF PV
+ecrire 	::= ECRIRE PO operation PF PV
 		| ECRIRE PO valeur PF PV
 		;
 		
-//Represente le return d'une methode		
-retourner ::= RET operation PV
+//Repr√©sente le return d'une methode		
+retourner 	::= RET operation PV
 			| RET valeur PV
 			;
 								
-//Represente l'appel d'une fonction		
-appel ::= APPEL NOM PO parametreA PF
+//Repr√©sente l'appel d'une fonction		
+appel 	::= APPEL NOM PO parametreA PF 
 		| APPEL NOM PO PF
 		;
 
-//Parametre d'une methode passÈ en entree lors de son appel		
-parametreA ::= operation V parametreA
+//Parametre d'une methode pass√©e en entree lors de son appel		
+parametreA 	::= operation V parametreA
 			| operation
 			| NOM V parametreA
 			| NOM
 			| NUM
-			;
-			
-
-
-			
+			;		

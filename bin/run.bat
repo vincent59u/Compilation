@@ -1,11 +1,14 @@
 @echo OFF
 :: ----------------------------------------
-:: Script qui dÈmarre l'application d'évaluation
-:: d'une expression parenthésée
-:: Projet: Exemple CUP
-:: Author : A. Roussanaly
-:: Organization : Loria
-:: date : Fev 2013
+:: Script for starting the following application:
+:: Projet de compilation
+:: Authors : 
+:: Matthieu VINCENT
+:: Martin LEMAITRE
+:: Loic REISDOERFER
+:: Mervine LIEFFROY
+
+:: date : 2017
 :: ---------------------------------------
 :: Example of usage:
 :: > run
@@ -24,7 +27,7 @@ set LIB_DIR=%PROJ_HOME%\lib
 set CLASSES_DIR=%PROJ_HOME%\build\classes
 
 :: --->4) the name of class to launch
-set CLASS_NAME=fr.ul.miage.exemple.Main
+set CLASS_NAME=fr.ul.miage.projet.Main
 
 :: -->5) extra parameters
 set PARAMS=
