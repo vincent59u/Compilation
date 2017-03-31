@@ -17,6 +17,7 @@ import java_cup.runtime.Symbol;
 %line
 %public
 %cup
+%debug
 
 /* macros */
 
@@ -34,17 +35,13 @@ OPBOOL = ==|<|>|<=|>=|\!=|\!
 ")"			{ return new Symbol(sym.PF); }
 "{"			{ return new Symbol(sym.AO); }
 "}"			{ return new Symbol(sym.AF); }
-
 "*"			{ return new Symbol(sym.MUL); }
 "/"			{ return new Symbol(sym.DIV); }
 "-"			{ return new Symbol(sym.MOINS); }
 "+"			{ return new Symbol(sym.PLUS); }
-
-
 "="			{ return new Symbol(sym.EG); }
 ";"			{ return new Symbol(sym.PV); }
 ","			{ return new Symbol(sym.V); }
-
 "ecrire"	{ return new Symbol(sym.ECRIRE); }
 "lire()"	{ return new Symbol(sym.LIRE); }
 "tantQue"	{ return new Symbol(sym.TQ); }

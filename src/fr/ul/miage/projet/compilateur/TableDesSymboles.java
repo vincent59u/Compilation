@@ -38,7 +38,7 @@ public class TableDesSymboles {
 	 * @param sym
 	 */
 	public void supprimerSymbole(Symbole sym){
-		// On pacours la TDS tant que nous n'avons pas trouver le symbole
+		// On pacours la TDS tant que nous n'avons pas trouvé le symbole
 		for(Entry<Integer, Symbole> entry : this.tds.entrySet()) {
 		    int clef = entry.getKey();
 		    Symbole symbole = entry.getValue();
@@ -59,6 +59,26 @@ public class TableDesSymboles {
 	 */
 	public Symbole getSymbole(int clef){
 		return this.tds.get(clef);
+	}
+	
+	/**
+	 * Getter qui permet de retourner un symbole présent dans la table des symboles
+	 * @param sym
+	 * @return Symbole
+	 */
+	public Symbole getSymbole(Symbole sym){
+		// On pacours la TDS tant que nous n'avons pas trouvé le symbole
+		for(Entry<Integer, Symbole> entry : this.tds.entrySet()) {
+		    int clef = entry.getKey();
+		    Symbole symbole = entry.getValue();
+		    // Si le symbole à supprimer se trouve dans la table
+		    if(symbole.getNom() == sym.getNom() && symbole.getScope() == sym.getScope()){
+		    	// On le supprime
+		    	return this.getSymbole(clef);
+		    }   
+		}
+		// Si le symbole n'existe pas, on return la valeur null;
+		return null;
 	}
 
 	/**

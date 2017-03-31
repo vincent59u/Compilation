@@ -8,16 +8,15 @@
 
 
 package fr.ul.miage.projet.generated;
-import fr.ul.miage.projet.compilateur.Calculatrice;
 
 
 /* la grammaire */
-terminal String NUM, PLUS, MOINS, DIV, MUL, OP, NOM ;
+terminal NUM, PLUS, MOINS, DIV, MUL, OP, NOM ;
 terminal COM, FONCTION, PRINC, PF, PO, AO, AF, PV, V, EG, GLOB, LOC, ENTIER, RET;
 terminal APPEL, SI, SINON, OPBOOL, TQ, LIRE, ECRIRE;
 non terminal prog, block, fonctionP, blockFonction, affectation, declaration, retourner, conditionnelle, condition; 
 non terminal operateur, fonction, parametre, declarationI, parametreA, parametreD, boucle, ecrire;
-non terminal String operation, valeur, appel;
+non terminal operation, valeur, appel;
 
 
 start with prog;
@@ -26,7 +25,7 @@ start with prog;
 prog 	::= block 
 	 	;
 
-//Un block constitue la partie "hors mÈthode" du programme et permet de placer chaque ÈlÈment	
+//Un block constitue la partie "hors m√©thode" du programme et permet de placer chaque √©l√©ment	
 block	::= COM block
 		| declaration block
 		| fonction block
@@ -36,47 +35,47 @@ block	::= COM block
 		| fonctionP
 		;
 
-//ReprÈsente la declaration d'une variable global uniquement dans le block "hors mÈthodes"
-declaration ::= GLOB ENTIER parametreD EG operation:chien PV  {: Calculatrice.traduire(chien); :}
+//Repr√©sente la declaration d'une variable global uniquement dans le block "hors m√©thodes"
+declaration ::= GLOB ENTIER parametreD EG operation PV
 		| GLOB ENTIER parametreD EG valeur PV 
 		| GLOB ENTIER parametreD PV
 		;
 		
-//ReprÈsente les variables dÈcrite lors de leurs dÈclaration (ex : "glob entier i;" OU "glob entier	i, j, k;")
+//Repr√©sente les variables d√©crite lors de leurs d√©claration (ex : "glob entier i;" OU "glob entier	i, j, k;")
 parametreD ::= NOM V parametreD
 			| NOM
 			;
 
-//Permet de sÈlectionner uniquement des atomes du programme
-valeur ::= NUM:i {: RESULT = i; :}
-		| NOM:i {: RESULT = i; :}
+//Permet de s√©lectionner uniquement des atomes du programme
+valeur ::= NUM
+		| NOM
 		;
 		
-//Operation reprÈsente tous les calculs rÈalisablent dans le programme
-operation ::= NOM:i operateur:j operation:k		{: RESULT = i+j+k; :}
-			| NOM:i operateur:j valeur:k		{: RESULT = i+j+k; :}
-			| appel:i operateur:j operation:k	{: RESULT = i+j+k; :}
-			| appel:i operateur:j valeur:k		{: RESULT = i+j+k; :}
-			| appel:i							{: RESULT = i;:}
-			| NUM:i operateur:j operation:k		{: RESULT = i+j+k; :}
-			| NUM:i operateur:j valeur:k 		{: RESULT = i+j+k; :}
-			| PO operation:i PF operateur:j operation:k {: RESULT = "("+i+")"+j+k; :}
-			| PO operation:i PF operateur:j valeur:k 	{: RESULT = "("+i+")"+j+k; :}
-			| PO operation:i PF 				{: RESULT = "("+i+")"; :}
-			| LIRE operateur:j operation:k		{: RESULT = "lire()"+j+k; :}
-			| LIRE operateur:j valeur:k			{: RESULT = "lire()"+j+k; :}
-			| LIRE								{: RESULT = "lire()"; :}
+//Operation repr√©sente tous les calculs r√©alisablent dans le programme
+operation ::= NOM operateur operation
+			| NOM operateur valeur
+			| appel operateur operation
+			| appel operateur valeur
+			| appel	
+			| NUM operateur operation
+			| NUM operateur valeur
+			| PO operation PF operateur operation
+			| PO operation PF operateur valeur
+			| PO operation PF
+			| LIRE operateur operation
+			| LIRE operateur valeur
+			| LIRE
 			;
 
-//DÈtermine les operateurs que la grammaire	accepte
-operateur	::= PLUS 	{: RESULT = "+"; :}
-			| MOINS		{: RESULT = "-"; :}
-			| MUL		{: RESULT = "*"; :}
-			| DIV		{: RESULT = "/"; :}
+//D√©termine les operateurs que la grammaire	accepte
+operateur	::= PLUS 
+			| MOINS
+			| MUL
+			| DIV
 			;
 
 //Represente l'affectation d'une valeur oud'un calcul a une variable
-affectation ::= NOM EG operation:chien PV //{: Calculatrice.traduire(chien); :}
+affectation ::= NOM EG operation PV
 			| NOM EG valeur PV
 			;
 
@@ -88,9 +87,9 @@ fonction ::= FONCTION ENTIER NOM PO parametre PF AO blockFonction AF
 			| FONCTION NOM PO parametre PF AO blockFonction AF
 			;
 
-//Represente les parametres d'une fonction ‡ la creation
-parametre ::=  operation:chien V parametre 	//{: Calculatrice.traduire(chien); :}
-			| operation:chien				//{: Calculatrice.traduire(chien); :}
+//Represente les parametres d'une fonction √† la cr√©ation
+parametre ::=  operation V parametre 
+			| operation
 			| ENTIER NOM
 			| ENTIER NOM V parametre
 			| NOM V parametre
@@ -98,7 +97,7 @@ parametre ::=  operation:chien V parametre 	//{: Calculatrice.traduire(chien); :
 			|
 			;
 			
-/*"blockFonction" a le meme role que "block", ‡ la diffÈrence qu'il ne peut y avoir de fonction principal ‡ l'intÈrieur.
+/*"blockFonction" a le meme role que "block", √† la diff√©rence qu'il ne peut y avoir de fonction principal √† l'int√©rieur.
  * Utiliser pour le contenu des fonctions*/
 blockFonction ::= declarationI blockFonction
 				| COM blockFonction
@@ -123,12 +122,11 @@ conditionnelle ::= SI PO condition PF AO blockFonction AF
 				| SI PO condition PF AO blockFonction AF SINON AO blockFonction AF
 				;
 
-//Represente les diffÈrentes formes d'une expression booleenne dans nos programmes
+//Represente les diff√©rentes formes d'une expression booleenne dans nos programmes
 condition ::= valeur OPBOOL valeur
-			| valeur OPBOOL operation:chien	//{: Calculatrice.traduire(chien); :}
-			| operation:chien OPBOOL valeur	//{: Calculatrice.traduire(chien); :}
-			| operation:chien1 OPBOOL operation:chien2	/*{: Calculatrice.traduire(chien1);
-														   Calculatrice.traduire(chien2); :}*/
+			| valeur OPBOOL operation
+			| operation OPBOOL valeur
+			| operation OPBOOL operation
 			;
 			
 //Represente la boucle Tant Que			
@@ -136,24 +134,24 @@ boucle ::= TQ PO condition PF AO blockFonction AF
 		;
 
 //La fonction ecrire
-ecrire ::= ECRIRE PO operation:chien PF PV //{: Calculatrice.traduire(chien); :}
+ecrire ::= ECRIRE PO operation PF PV
 		| ECRIRE PO valeur PF PV
 		;
 		
 //Represente le return d'une methode		
-retourner ::= RET operation:chien PV		//{: Calculatrice.traduire(chien); :}
+retourner ::= RET operation PV
 			| RET valeur PV
 			;
 								
 //Represente l'appel d'une fonction		
-appel ::= APPEL:i NOM:j PO parametreA:k PF 	{: RESULT = i+j+"("+k+")"; :}
-		| APPEL:i NOM:j PO PF				{: RESULT = i+j+"()"; :}
+appel ::= APPEL NOM PO parametreA PF
+		| APPEL NOM PO PF
 		;
 
-//Parametre d'une methode passÈ en entree lors de son appel		
-parametreA ::= operation:i V parametreA:j	{: RESULT = i+","+j; :}
-			| operation:i					{: RESULT = i; :}
-			| NOM:i V parametreA:j			{: RESULT = i+","+j; :}
-			| NOM:i							{: RESULT = i; :}
-			| NUM:i							{: RESULT = i; :}
+//Parametre d'une methode pass√©e en entree lors de son appel		
+parametreA ::= operation V parametreA
+			| operation
+			| NOM V parametreA
+			| NOM
+			| NUM
 			;

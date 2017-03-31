@@ -1,0 +1,29 @@
+/**
+* Programme qui permet de calculer la suite de Fibonacci.
+*/
+
+fonction entier fib(entier n){
+	loc entier i, j, k, temp;
+	i = 0; 
+	j = 1;
+	k = 0; 
+	
+	si(n == 0){
+		retourner 0;
+	}
+	si(n == 2){
+		retourner 1;
+	}
+			
+	tantQue (k<n){
+   		temp = i + j;
+   		i = j;
+   		j = temp;
+   		k = k + 1;
+	}
+	retourner temp;
+}
+
+fonction principal(){
+	appel fib(20);
+}
