@@ -19,11 +19,12 @@ import java_cup.runtime.Symbol;
 %cup
 %debug
 
-/* macros */
 
+
+/* macros */
 NUM = [0-9]+
+NOM = [a-zA-Z][a-zA-Z0-9]*
 COM = \/\/[^\n]*|\/\*(([^*])|(\*[^/]))*\*\/
-NOM = [a-zA-Z]+[\w]*([a-zA-Z]|[0-9])*
 SEP = [ \t]|\n|\r|\r\n
 OPBOOL = ==|<|>|<=|>=|\!=|\! 
 

@@ -1,8 +1,8 @@
 /*
- * Test génération de code : variables globales
+ * Test gï¿½nï¿½ration de code : variables globales
  */
 
- glob entier i = 10*2+appel f(23)*lire()-21*appel g(a,21+21)/lire()*3; /* i = 0 normalement */
+ glob entier i = 0;
  glob entier j, k;
 
  fonction principal(){
