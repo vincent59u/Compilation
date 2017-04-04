@@ -39,7 +39,7 @@ instruction ::= declarationVar
 		| boucle 
 		| ecrire
 		| retourner
-		| appelFonc
+		| appelFonc PV
 		;
 
 
@@ -105,7 +105,7 @@ retourner ::= RET expression PV
 		;
 		
 //l'appel de fonction
-appelFonc ::= APPEL NOM PO parametreA PF PV
+appelFonc ::= APPEL NOM PO parametreA PF
 		;
 
 // les arguments d'une fonction
