@@ -44,7 +44,7 @@ OPBOOL = ==|<|>|<=|>=|\!=|\!
 ";"			{ return new Symbol(sym.PV); }
 ","			{ return new Symbol(sym.V); }
 "ecrire"	{ return new Symbol(sym.ECRIRE); }
-"lire()"	{ return new Symbol(sym.LIRE); }
+"lire"	{ return new Symbol(sym.LIRE); }
 "tantQue"	{ return new Symbol(sym.TQ); }
 "si"		{ return new Symbol(sym.SI); }
 "sinon"		{ return new Symbol(sym.SINON); }

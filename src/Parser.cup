@@ -38,7 +38,6 @@ instruction ::= declarationVar
 		| conditionnelle
 		| boucle 
 		| ecrire
-		| lire
 		| retourner
 		;
 
@@ -95,8 +94,8 @@ ecrire ::= ECRIRE PO expression PF PV
 		;
 
 //fonction lecture
-lire ::= LIRE PO expression PF
-		| LIRE PO PF
+lire ::= LIRE PO expression PF PV
+		| LIRE PO PF PV
 		; 
 
 
@@ -120,14 +119,17 @@ expression ::= expression PLUS facteur
 		| expression MOINS facteur 
 		| facteur
 		;
+		
 //gère les * et les /		on décompose encore plus une expression pour arriver a atome
 facteur ::= facteur MUL atome 
 		| facteur DIV atome 
 		| atome 
 		;
+		
 // tous les éléments simples , gère aussi les parenthèses 
 atome ::= NOM 
 		| NUM
 		| PO expression PF
 		| appelFonc
+		| lire
 		;

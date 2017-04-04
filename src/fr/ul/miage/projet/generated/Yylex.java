@@ -66,13 +66,12 @@ public class Yylex implements java_cup.runtime.Scanner {
     "\1\0\1\1\1\2\1\3\1\4\1\5\1\6\1\5"+
     "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
     "\1\17\1\20\11\3\1\21\1\0\1\10\7\3\1\22"+
-    "\3\3\1\0\4\3\1\23\6\3\1\21\7\3\1\24"+
-    "\5\3\1\0\1\3\1\25\1\26\2\3\1\27\1\30"+
-    "\1\3\1\31\4\3\1\32\3\3\1\33\1\3\1\34"+
-    "\1\35";
+    "\3\3\1\0\4\3\1\23\6\3\1\21\3\3\1\24"+
+    "\3\3\1\25\6\3\1\26\1\27\2\3\1\30\1\31"+
+    "\5\3\1\32\3\3\1\33\1\3\1\34\1\35";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[89];
+    int [] result = new int[87];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -104,14 +103,13 @@ public class Yylex implements java_cup.runtime.Scanner {
     "\0\u02bc\0\u02df\0\u0302\0\u0325\0\u0348\0\u036b\0\u038e\0\u03b1"+
     "\0\u03d4\0\u03f7\0\u041a\0\u043d\0\u0460\0\u0483\0\151\0\u04a6"+
     "\0\u04c9\0\u04ec\0\u050f\0\u0532\0\u0555\0\43\0\u0578\0\u059b"+
-    "\0\u05be\0\u05e1\0\u0604\0\u0627\0\u064a\0\151\0\u066d\0\u0690"+
-    "\0\u06b3\0\u06d6\0\u06f9\0\u071c\0\u073f\0\151\0\151\0\u0762"+
-    "\0\u0785\0\151\0\151\0\u07a8\0\43\0\u07cb\0\u07ee\0\u0811"+
-    "\0\u0834\0\151\0\u0857\0\u087a\0\u089d\0\151\0\u08c0\0\151"+
-    "\0\151";
+    "\0\u05be\0\151\0\u05e1\0\u0604\0\u0627\0\151\0\u064a\0\u066d"+
+    "\0\u0690\0\u06b3\0\u06d6\0\u06f9\0\151\0\151\0\u071c\0\u073f"+
+    "\0\151\0\151\0\u0762\0\u0785\0\u07a8\0\u07cb\0\u07ee\0\151"+
+    "\0\u0811\0\u0834\0\u0857\0\151\0\u087a\0\151\0\151";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[89];
+    int [] result = new int[87];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -165,26 +163,25 @@ public class Yylex implements java_cup.runtime.Scanner {
     "\2\0\2\4\17\0\1\4\1\77\16\4\2\0\2\4"+
     "\17\0\7\4\1\100\10\4\2\0\2\4\17\0\2\4"+
     "\1\101\15\4\2\0\2\4\17\0\1\102\17\4\2\0"+
-    "\2\4\17\0\11\4\1\103\6\4\2\0\2\4\7\0"+
-    "\1\104\7\0\20\4\2\0\2\4\17\0\10\4\1\105"+
-    "\7\4\2\0\2\4\17\0\4\4\1\106\13\4\2\0"+
-    "\2\4\17\0\7\4\1\107\10\4\2\0\2\4\17\0"+
-    "\5\4\1\110\12\4\2\0\2\4\17\0\1\4\1\111"+
-    "\16\4\2\0\2\4\17\0\1\112\17\4\2\0\2\4"+
-    "\17\0\2\4\1\113\15\4\2\0\2\4\17\0\2\4"+
-    "\1\114\15\4\14\0\1\115\30\0\2\4\17\0\11\4"+
-    "\1\116\6\4\2\0\2\4\17\0\3\4\1\117\14\4"+
-    "\2\0\2\4\17\0\3\4\1\120\14\4\2\0\2\4"+
-    "\17\0\7\4\1\121\10\4\2\0\2\4\17\0\1\122"+
-    "\17\4\2\0\2\4\17\0\13\4\1\123\4\4\2\0"+
-    "\2\4\17\0\17\4\1\124\2\0\2\4\17\0\1\125"+
-    "\17\4\2\0\2\4\17\0\7\4\1\126\10\4\2\0"+
-    "\2\4\17\0\6\4\1\127\11\4\2\0\2\4\17\0"+
-    "\2\4\1\130\15\4\2\0\2\4\17\0\4\4\1\131"+
+    "\2\4\17\0\11\4\1\103\6\4\2\0\2\4\17\0"+
+    "\10\4\1\104\7\4\2\0\2\4\17\0\4\4\1\105"+
+    "\13\4\2\0\2\4\17\0\7\4\1\106\10\4\2\0"+
+    "\2\4\17\0\5\4\1\107\12\4\2\0\2\4\17\0"+
+    "\1\4\1\110\16\4\2\0\2\4\17\0\1\111\17\4"+
+    "\2\0\2\4\17\0\2\4\1\112\15\4\2\0\2\4"+
+    "\17\0\2\4\1\113\15\4\2\0\2\4\17\0\11\4"+
+    "\1\114\6\4\2\0\2\4\17\0\3\4\1\115\14\4"+
+    "\2\0\2\4\17\0\3\4\1\116\14\4\2\0\2\4"+
+    "\17\0\7\4\1\117\10\4\2\0\2\4\17\0\1\120"+
+    "\17\4\2\0\2\4\17\0\13\4\1\121\4\4\2\0"+
+    "\2\4\17\0\17\4\1\122\2\0\2\4\17\0\1\123"+
+    "\17\4\2\0\2\4\17\0\7\4\1\124\10\4\2\0"+
+    "\2\4\17\0\6\4\1\125\11\4\2\0\2\4\17\0"+
+    "\2\4\1\126\15\4\2\0\2\4\17\0\4\4\1\127"+
     "\13\4\1\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[2275];
+    int [] result = new int[2205];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -223,11 +220,10 @@ public class Yylex implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\1\11\3\1\2\11\3\1\10\11\12\1\1\0"+
-    "\1\11\13\1\1\0\13\1\1\11\15\1\1\0\10\1"+
-    "\1\11\14\1";
+    "\1\11\13\1\1\0\13\1\1\11\41\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[89];
+    int [] result = new int[87];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -815,38 +811,38 @@ public class Yylex implements java_cup.runtime.Scanner {
           case 48: break;
           case 20: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [53] { return new Symbol(sym.GLOB); }");
-            { return new Symbol(sym.GLOB);
+            System.out.println("action [47] { return new Symbol(sym.LIRE); }");
+            { return new Symbol(sym.LIRE);
             }
           case 49: break;
           case 21: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [57] { return new Symbol(sym.APPEL,yytext()); }");
-            { return new Symbol(sym.APPEL,yytext());
+            System.out.println("action [53] { return new Symbol(sym.GLOB); }");
+            { return new Symbol(sym.GLOB);
             }
           case 50: break;
           case 22: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [50] { return new Symbol(sym.SINON); }");
-            { return new Symbol(sym.SINON);
+            System.out.println("action [57] { return new Symbol(sym.APPEL,yytext()); }");
+            { return new Symbol(sym.APPEL,yytext());
             }
           case 51: break;
           case 23: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [46] { return new Symbol(sym.ECRIRE); }");
-            { return new Symbol(sym.ECRIRE);
+            System.out.println("action [50] { return new Symbol(sym.SINON); }");
+            { return new Symbol(sym.SINON);
             }
           case 52: break;
           case 24: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [54] { return new Symbol(sym.ENTIER); }");
-            { return new Symbol(sym.ENTIER);
+            System.out.println("action [46] { return new Symbol(sym.ECRIRE); }");
+            { return new Symbol(sym.ECRIRE);
             }
           case 53: break;
           case 25: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [47] { return new Symbol(sym.LIRE); }");
-            { return new Symbol(sym.LIRE);
+            System.out.println("action [54] { return new Symbol(sym.ENTIER); }");
+            { return new Symbol(sym.ENTIER);
             }
           case 54: break;
           case 26: 
