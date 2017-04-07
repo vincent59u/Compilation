@@ -95,8 +95,7 @@ ecrire ::= ECRIRE PO expression PF PV
 		;
 
 //fonction lecture
-lire ::= LIRE PO expression PF PV
-		| LIRE PO PF PV
+lire ::= LIRE PO PF 
 		; 
 
 
