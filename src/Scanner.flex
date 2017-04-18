@@ -20,7 +20,6 @@ import java_cup.runtime.Symbol;
 %debug
 
 
-
 /* macros */
 NUM = [0-9]+
 NOM = [a-zA-Z][a-zA-Z0-9]*

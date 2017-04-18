@@ -1,4 +1,4 @@
-package fr.ul.miage.projet.compilateur.enumeration;
+package fr.ul.miage.projet.compilateur;
 
 /**
  * Enum qui permet de lister les différents scope connu de notre langage de programmation

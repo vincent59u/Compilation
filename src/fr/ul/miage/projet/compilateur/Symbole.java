@@ -1,7 +1,5 @@
 package fr.ul.miage.projet.compilateur;
 
-import fr.ul.miage.projet.compilateur.enumeration.Scope;
-
 /**
  * Class qui permet de modéliser un symbole du langage de programmation.
  * Ce symbole sera utilisé dans la table des symboles (TDS)

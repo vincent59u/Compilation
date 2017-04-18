@@ -22,9 +22,10 @@ non terminal expression, affectation, conditionnelle, condition, boucle, ecrire,
 start with prog;
 
 //Le programme commence avec un bloc
-prog 	::= block 
+prog 	::= block
 	 	;
 
+	 	
 //Un block constitue la partie "hors méthode" du programme et permet de placer chaque élément	
 block	::= instruction block
 		| COM block 
@@ -133,3 +134,4 @@ atome ::= NOM
 		| appelFonc
 		| lire
 		;
+	 	
