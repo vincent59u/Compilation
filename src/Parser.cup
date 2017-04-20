@@ -11,6 +11,8 @@
 package fr.ul.miage.projet.generated;
 
 action code {:
+	ArrayList<Noeud> reserve = new ArrayList<Noeud>();
+	ArrayList<Noeud> reserveInstruction = new ArrayList<Noeud>();
 	TableDesSymboles tds = new TableDesSymboles();
 :}
 
@@ -35,36 +37,61 @@ compil ::= prog:prog {:
 		;
 		
 //Le programme commence avec un bloc
-prog 	::= block
+prog 	::= block:bl 	{: Noeud prog = new Noeud ("",PROG,null);
+						prog.ajoutFils(bl);
+						RESULT = prog;  :}
 	 	;
 
-	 	
+
 //Un block constitue la partie "hors méthode" du programme et permet de placer chaque élément	
-block	::= instruction block
-		| COM block 
+block	::= instruction block 
+		| COM block 			
 		|
 		;
 
-instruction ::= declarationVar
-		| declarationVarLoc
-		| declarationFonc
-		| affectation
+instruction ::= declarationVar:var 	//{: NoeudCourant.ajoutFils(var); :}
+		| declarationVarLoc:var		//{: NoeudCourant.ajoutFils(var); :}
+		| declarationFonc:fonction	
+		| affectation				
 		| conditionnelle
 		| boucle 
-		| ecrire
+		| ecrire:ecrire 			//{: NoeudCourant.ajoutFils(ecrire); :}
 		| retourner
 		| appelFonc PV
 		;
 
 
 //Représente la declaration d'une variable global uniquement dans le block "hors méthodes"
-declarationVar ::= GLOB ENTIER parametreD PV // glob entier i; ou glob entier i,j;
-		| GLOB ENTIER parametreD EG expression PV // glob entier i = x+y...
+declarationVar ::= GLOB ENTIER parametreD PV 	{: for(noeud : reserve) {  noeud.setValeur(0);   noeud.setType(VAR);  }
+													ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+													intermed.addAll(reserve);
+													reserve.clean();
+													RESULT = intermed;  :}      // glob entier i; ou glob entier i,j;
+		| GLOB ENTIER parametreD EG expression PV 				// glob entier i = x+y...
 		;
 
 //Représente la déclaration d'une variable locale 
-declarationVarLoc ::= LOC ENTIER parametreD PV
-		| LOC ENTIER parametreD EG expression PV
+declarationVarLoc ::= LOC ENTIER parametreD PV	{: for(noeud : reserve) {  noeud.setValeur(0);   noeud.setType(VAR);  }
+													ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+													intermed.addAll(reserve);
+													reserve.clean();
+													RESULT = intermed;  :} 
+													
+		| LOC ENTIER parametreD EG expression:expr PV	
+/*
+{:
+int i = 0;
+for(noeud : reserve) {  
+	noeud.setValeur(0);   
+	noeud.setType(VAR);
+	i++;
+	}
+ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+intermed.addAll(reserve);
+reserve.clean();
+RESULT = intermed; :}
+
+*/
 		;
 
 
@@ -77,8 +104,9 @@ declarationFonc ::= FONCTION ENTIER NOM PO parametreF PF AO block AF
 			;	
 			
 //Représente les variables décrite lors de leurs déclaration (ex : "glob entier i;" OU "glob entier	i, j, k;")
-parametreD ::= NOM V parametreD
-			| NOM
+parametreD ::= NOM:nom V parametreD:param 	{: reserve.add(new Noeud(nom,null,null);
+											reserve.addAll(param); :}
+			| NOM:nom						{: reserve.add(new Noeud(nom,null,null)) :}
 			;
 
 
@@ -105,11 +133,13 @@ condition ::= expression OPBOOL expression
 		;
 
 //fonction écriture 
-ecrire ::= ECRIRE PO expression PF PV
+ecrire ::= ECRIRE PO expression:expr PF PV {: Noeud ecrire = new Noeud(null,ECRIRE,null);
+											ecrire.ajoutFils(expr);
+											RESULT = ecrire; :}
 		;
 
 //fonction lecture
-lire ::= LIRE PO PF 
+lire ::= LIRE PO PF {: RESULT == new Noeud(null,LIRE,null); :}
 		; 
 
 
@@ -129,22 +159,34 @@ parametreA ::= expression V parametreA
 
 
 // une expression : ici on gère les + et les - facteur est utilisé pour la priorité des opérations
-expression ::= expression PLUS facteur
-		| expression MOINS facteur 
-		| facteur
+expression ::= expression:expr PLUS facteur:facteur	{: Noeud plus = new Noeud(null,PLUS,null);
+													plus.ajoutFils((Noeud)expr);
+													plus.ajoutFils((Noeud)facteur);
+													RESULT = plus; :}
+		| expression:expr MOINS facteur:facteur 	{: Noeud moins = new Noeud(null,MOINS,null);
+													moins.ajoutFils((Noeud)expr);
+													moins.ajoutFils((Noeud)facteur);
+													RESULT = moins; :}
+		| facteur:facteur							{: RESULT = (Noeud)facteur; :}
 		;
 		
 //gère les * et les /		on décompose encore plus une expression pour arriver a atome
-facteur ::= facteur MUL atome 
-		| facteur DIV atome 
-		| atome 
+facteur ::= facteur:facteur MUL atome:a 	{: Noeud mul = new Noeud(null,MUL,null);
+											mul.ajoutFils((Noeud)facteur);
+											mul.ajoutFils((Noeud)a);
+											RESULT = mul; :}
+		| facteur:facteur DIV atome:a   	{: Noeud div = new Noeud(null,DIV,null);
+											div.ajoutFils((Noeud)facteur);
+											div.ajoutFils((Noeud)a);
+											RESULT = div; :}
+		| atome:a 							{: RESULT = (Noeud)a; :}
 		;
 		
 // tous les éléments simples , gère aussi les parenthèses 
-atome ::= NOM 
-		| NUM
-		| PO expression PF
-		| appelFonc
-		| lire
+atome ::= NOM:nom {: RESULT = new Noeud ("nom",VAR,null) :}
+		| NUM:num {: RESULT = new Noeud (null,CONSTANTE, num) :}
+		| PO expression:expr PF {: RESULT = (Noeud)expr:}
+		| appelFonc {::}
+		| lire {: RESULT = new Noeud ("lire",LIRE,null) :}
 		;
 	 	

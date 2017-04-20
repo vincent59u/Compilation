@@ -18,5 +18,7 @@ public enum Type {
 	TANTQUE,
 	POUR,
 	LIRE,
+	VAR,
+	CONSTANTE,
 	ECRIRE;
 }
