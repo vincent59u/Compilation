@@ -5,6 +5,8 @@ package fr.ul.miage.projet.compilateur;
  * @authors Matthieu VINCENT, Martin LEMAITRE, Loic REISDOERFER, Mervine LIEFFROY.
  */
 public enum Type {
+	PRINC,
+	FONCT,
 	AFFECTATION,
 	ADD,
 	MUL,
