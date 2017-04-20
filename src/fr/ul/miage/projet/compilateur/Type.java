@@ -7,6 +7,8 @@ package fr.ul.miage.projet.compilateur;
 public enum Type {
 	PRINC,
 	FONCT,
+	RETURN,
+	APPEL,
 	AFFECTATION,
 	ADD,
 	MUL,

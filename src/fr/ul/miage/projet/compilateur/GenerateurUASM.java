@@ -71,6 +71,98 @@ public class GenerateurUASM {
 	}
 	
 	public void generer_fonction(Noeud ast){
-		
+		res += "\n" + ast.getNom() + ":";
+		generer_data_loc();
+		res += "\nPUSH(LP)";
+		res += "\nPUSH(BP)";
+		res += "\nMOVE(SP,BP)";
+		res += "\nALLOCATE(" + ast.getListeFils().get(0).getListeFils().size() + ")";
+		for (Noeud n : ast.getListeFils()){
+			generer_instruction(n);
+		}
+		if(ast.getType() == Type.FONCT){
+			if(ast.getListeFils().get(ast.getListeFils().size() - 1).getType() == Type.RETURN){
+				res+="\nreturn_" + ast.getValeur();
+				res+="\nDEALLOCATE(" + ast.getListeFils().size() + ")";
+				res+="\nPOP(BP)";
+				res+="\nPOP(LP)";
+				res+="\nRTN()";
+				generer_retour(ast.getListeFils().get(ast.getListeFils().size() - 1));
+			}
+		}
+	}
+	
+	public void generer_data_loc(){
+		// On parcours tous les éléments de la table des symboles
+		for (Entry<Integer, Symbole> entry : this.tds.getTds().entrySet()){
+			// On récupère les informations utiles au data
+			Integer clef = entry.getKey();
+			Symbole symbole = entry.getValue(); 
+			// Si c'est une variable global, on l'ajoute à la partie des datas
+			if (symbole.getScope() == Scope.LOC){  
+				res += "\n" + symbole.getNom() + "=" + symbole.getValeur();
+			}
+		}
+	}
+	
+	public void generer_retour(Noeud ast){
+		generer_expression(ast.getListeFils().get(0));
+		res+= "\nPOP(R0)";
+		int tmp = ast.getListeFils().get(0).getListeFils().size(); 		
+		res+= "\nPUTFRAME(R0,"+ tmp + ")";
+		res+= "\nBR("+ ast.getNom() + ")";
+	}
+	
+	public void generer_instruction(Noeud ast){
+		switch(ast.getType()){
+			case AFFECTATION :
+				generer_affectation(ast);
+				break;
+			case APPEL :
+				generer_appel(ast);
+				break;
+			case SI :
+				generer_si(ast);
+				break;
+			case TANTQUE : 
+				generer_tantQue(ast);
+				break;
+			case ECRIRE :
+				generer_ecrire(ast);
+				break;
+			default :
+				break;
+		}
+	}
+	
+	public void generer_ecrire(Noeud ast){
+		generer_expression(ast.getListeFils().get(0));
+		res+= "\nPOP(R0)";
+		res+= "\nWRINT()";
+	}
+
+	public void generer_tantQue(Noeud ast){
+		// TODO Auto-generated method stub
+	}
+
+	public void generer_si(Noeud ast){
+		// TODO Auto-generated method stub
+	}
+
+	public void generer_appel(Noeud ast) {
+		res += "\nCALL(" + ast.getNom() + ")";
+	}
+
+	public void generer_affectation(Noeud ast){
+		// TODO Auto-generated method stub
+	}
+
+	public void generer_expression(Noeud ast){
+		//TODO
+	}
+	
+	public void generer_lire(){
+		res+= "\nPOP(R0)";
+		res+= "\nRDINT()";
 	}
 }

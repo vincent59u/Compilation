@@ -53,9 +53,9 @@ OPBOOL = ==|<|>|<=|>=|\!=|\!
 "entier"    { return new Symbol(sym.ENTIER); }
 "fonction"	{ return new Symbol(sym.FONCTION); }
 "principal"	{ return new Symbol(sym.PRINC); }
-"appel"		{ return new Symbol(sym.APPEL,yytext()); }
-{NUM}		{ return new Symbol(sym.NUM,yytext()); }
-{NOM}		{ return new Symbol(sym.NOM,yytext()); }
+"appel"		{ return new Symbol(sym.APPEL); }
+{NUM}		{ return new Symbol(sym.NUM); }
+{NOM}		{ return new Symbol(sym.NOM); }
 {COM}		{ return new Symbol(sym.COM); }
 {OPBOOL}	{ return new Symbol(sym.OPBOOL);}
 {SEP}		{ ; }

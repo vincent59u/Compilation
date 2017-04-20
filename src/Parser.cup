@@ -10,17 +10,30 @@
 
 package fr.ul.miage.projet.generated;
 
+action code {:
+	TableDesSymboles tds = new TableDesSymboles();
+:}
 
 /* la grammaire */
 terminal COM, GLOB, ENTIER, NOM, NUM, FONCTION, PRINC, LOC;
 terminal PV, V, EG, PO, PF, AO, AF;
 terminal PLUS, MOINS, MUL, DIV, SI, SINON, OPBOOL, TQ, ECRIRE, LIRE, RET, APPEL;
 non terminal prog, block, instruction, declarationVar, declarationVarLoc, declarationFonc, parametreD, parametreF, parametreA;
-non terminal expression, affectation, conditionnelle, condition, boucle, ecrire, lire, retourner, appelFonc, facteur, atome;
+non terminal expression, affectation, conditionnelle, condition, boucle, ecrire, lire, retourner, appelFonc, facteur, atome, compil;
 
 
-start with prog;
+start with compil;
 
+compil ::= prog:prog {: 
+				if((Noeud)prog.verifierStructure()){
+					Compilateur comp = new Compilateur(tds, (Noeud)prog);
+					comp.genererUASM();
+				}else{
+					System.err.println("L'arbre n'a pas été construit correctement");
+				}
+			:}
+		;
+		
 //Le programme commence avec un bloc
 prog 	::= block
 	 	;

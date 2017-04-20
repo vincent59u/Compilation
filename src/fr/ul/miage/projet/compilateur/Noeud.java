@@ -26,7 +26,7 @@ public class Noeud {
 	}
 	
 	/**
-	 * Méthode qui permet d'ajouter un 
+	 * Méthode qui permet d'ajouter un noeud
 	 * @param noeud
 	 */
 	public void ajoutFils(Noeud noeud){
