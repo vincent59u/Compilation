@@ -48,7 +48,7 @@ public class GenerateurUASM {
 		// On parcours tous les fils du noeud prog
 		for(Noeud noeud : this.ast.getListeFils()){
 			// Si le ou les fil(s) sont des fonction, on génère le code de celles-ci.
-			if(ast.getType() == Type.FONCT || ast.getType() == Type.PRINC){
+			if(noeud.getType() == Type.FONCT || noeud.getType() == Type.PRINC){
 				generer_fonction(ast);	
 			}
 		}

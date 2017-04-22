@@ -4,5 +4,12 @@
 CMOVE(pile, SP)
 CALL(principal)
 HALT()
+i: LONG(0)
+j: LONG(0)
 principal :
+:
+PUSH(LP)
+PUSH(BP)
+MOVE(SP,BP)
+ALLOCATE(0)
 pile :

@@ -10,7 +10,7 @@ public class Noeud {
 	protected String nom;
 	protected Type type;
 	protected Object valeur;
-	protected ArrayList<Noeud> listeFils;
+	public ArrayList<Noeud> listeFils;
 	
 	/**
 	 * Constructeur de la class Noeud
@@ -79,7 +79,7 @@ public class Noeud {
 			case SI : 
 				//2 fils : condition et bloc de code
 				//3 fils : condition, bloc de code et sinon
-				if (this.listeFils.size() != 2 || this.listeFils.size() != 3){
+				if (this.listeFils.size() != 2 && this.listeFils.size() != 3){
 					verification = false;
 					System.err.println("Le Noeud SI ne possède pas le bon nombre de fils");
 				}
