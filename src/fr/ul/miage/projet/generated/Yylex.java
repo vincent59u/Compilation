@@ -703,14 +703,14 @@ public class Yylex implements java_cup.runtime.Scanner {
           case 30: break;
           case 2: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [57] { return new Symbol(sym.NUM,yytext()); }");
-            { return new Symbol(sym.NUM,yytext());
+            System.out.println("action [57] { return new Symbol(sym.NUM, yytext()); }");
+            { return new Symbol(sym.NUM, yytext());
             }
           case 31: break;
           case 3: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [58] { return new Symbol(sym.NOM,yytext()); }");
-            { return new Symbol(sym.NOM,yytext());
+            System.out.println("action [58] { return new Symbol(sym.NOM, yytext()); }");
+            { return new Symbol(sym.NOM, yytext());
             }
           case 32: break;
           case 4: 
@@ -739,8 +739,8 @@ public class Yylex implements java_cup.runtime.Scanner {
           case 36: break;
           case 8: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [60] { return new Symbol(sym.OPBOOL); }");
-            { return new Symbol(sym.OPBOOL);
+            System.out.println("action [60] { return new Symbol(sym.OPBOOL, yytext()); }");
+            { return new Symbol(sym.OPBOOL, yytext());
             }
           case 37: break;
           case 9: 
@@ -823,8 +823,8 @@ public class Yylex implements java_cup.runtime.Scanner {
           case 50: break;
           case 22: 
             System.out.println("line: "+(yyline+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [56] { return new Symbol(sym.APPEL,yytext()); }");
-            { return new Symbol(sym.APPEL,yytext());
+            System.out.println("action [56] { return new Symbol(sym.APPEL); }");
+            { return new Symbol(sym.APPEL);
             }
           case 51: break;
           case 23: 

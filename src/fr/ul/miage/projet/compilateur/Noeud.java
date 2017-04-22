@@ -91,13 +91,6 @@ public class Noeud {
 					System.err.println("Le Noeud TANTQUE ne possède pas le bon nombre de fils");
 				}
 				break;
-			case POUR :
-				//4 fils : initialisation, condition, incrementation et bloc de code
-				if (this.listeFils.size() != 4){
-					verification = false;
-					System.err.println("Le Noeud POUR ne possède pas le bon nombre de fils");
-				}
-				break;
 			case LIRE :
 				//0 fils : L'element à lire est placé sur le noeud (pas en enfant)
 				if (this.listeFils.size() > 0){
@@ -188,5 +181,15 @@ public class Noeud {
 	 */
 	public void setListeFils(ArrayList<Noeud> listeFils) {
 		this.listeFils = listeFils;
+	}
+
+	/**
+	 * Surcharge de la méthode ajoutFils qui permet d'ajouter une liste de fils
+	 * @param block
+	 */
+	public void ajoutFils(ArrayList<Noeud> block) {
+		for(Noeud n : block){
+			ajoutFils(n);
+		}
 	}
 }

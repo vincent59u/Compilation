@@ -9,26 +9,30 @@
 
 
 package fr.ul.miage.projet.generated;
+import fr.ul.miage.projet.compilateur.*;
+import java.util.ArrayList;
 
 action code {:
-	ArrayList<Noeud> reserve = new ArrayList<Noeud>();
-	ArrayList<Noeud> reserveInstruction = new ArrayList<Noeud>();
+	int compteurSi = 0;
+	int compteurTantQue = 0;
 	TableDesSymboles tds = new TableDesSymboles();
 :}
 
 /* la grammaire */
-terminal COM, GLOB, ENTIER, NOM, NUM, FONCTION, PRINC, LOC;
+terminal COM, GLOB, ENTIER, FONCTION, PRINC, LOC;
 terminal PV, V, EG, PO, PF, AO, AF;
-terminal PLUS, MOINS, MUL, DIV, SI, SINON, OPBOOL, TQ, ECRIRE, LIRE, RET, APPEL;
-non terminal prog, block, instruction, declarationVar, declarationVarLoc, declarationFonc, parametreD, parametreF, parametreA;
-non terminal expression, affectation, conditionnelle, condition, boucle, ecrire, lire, retourner, appelFonc, facteur, atome, compil;
+terminal PLUS, MOINS, MUL, DIV, SI, SINON, TQ, ECRIRE, LIRE, RET, APPEL;
+terminal String OPBOOL, NOM, NUM;
 
+non terminal compil;
+non terminal ArrayList<Noeud> declarationVar, declarationVarLoc, declarationFonc, instruction, block, parametreD, parametreF, parametreA;
+non terminal Noeud facteur, atome, expression, conditionnelle, condition, boucle, ecrire, retourner, appelFonc, affectation, prog;
 
 start with compil;
 
 compil ::= prog:prog {: 
-				if((Noeud)prog.verifierStructure()){
-					Compilateur comp = new Compilateur(tds, (Noeud)prog);
+				if(prog.verifierStructure()){
+					Compilateur comp = new Compilateur(tds, prog);
 					comp.genererUASM();
 				}else{
 					System.err.println("L'arbre n'a pas été construit correctement");
@@ -37,156 +41,250 @@ compil ::= prog:prog {:
 		;
 		
 //Le programme commence avec un bloc
-prog 	::= block:bl 	{: Noeud prog = new Noeud ("",PROG,null);
-						prog.ajoutFils(bl);
+prog 	::= block:block 	{: Noeud prog = new Noeud ("",Type.PROG,null);
+						prog.ajoutFils(block);
 						RESULT = prog;  :}
 	 	;
 
 
 //Un block constitue la partie "hors méthode" du programme et permet de placer chaque élément	
-block	::= instruction block 
-		| COM block 			
-		|
+block	::= instruction:instruction block:block {: RESULT = new ArrayList<Noeud>(); 
+												((ArrayList<Noeud>)RESULT).addAll(instruction);
+												((ArrayList<Noeud>)RESULT).addAll(block);  :}
+
+		| COM block:block						{: RESULT = new ArrayList<Noeud>();
+												((ArrayList<Noeud>)RESULT).addAll(block); :}
+		|										{: RESULT = new ArrayList<Noeud>(); :}
 		;
 
-instruction ::= declarationVar:var 	//{: NoeudCourant.ajoutFils(var); :}
-		| declarationVarLoc:var		//{: NoeudCourant.ajoutFils(var); :}
-		| declarationFonc:fonction	
-		| affectation				
-		| conditionnelle
-		| boucle 
-		| ecrire:ecrire 			//{: NoeudCourant.ajoutFils(ecrire); :}
-		| retourner
-		| appelFonc PV
+instruction ::= declarationVar:var	{: RESULT = var; :}
+		| declarationVarLoc:varLoc	{: RESULT = varLoc; :}
+		| declarationFonc:fonction	{: RESULT = fonction; :}
+		| affectation:affect		{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+									intermed.add(affect);
+									RESULT = intermed; :}
+		| conditionnelle:condit		{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+									intermed.add(condit);
+									RESULT = intermed; :}
+		| boucle:boucle 			{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+									intermed.add(boucle);
+									RESULT = intermed; :}
+		| ecrire:ecrire 			{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+									intermed.add(ecrire);
+									RESULT = intermed; :}
+		| retourner:retourner		{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+									intermed.add(retourner);
+									RESULT = intermed; :}
+		| appelFonc:appel PV		{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+									intermed.add(appel);
+									RESULT = intermed; :}
 		;
 
 
 //Représente la declaration d'une variable global uniquement dans le block "hors méthodes"
-declarationVar ::= GLOB ENTIER parametreD PV 	{: for(noeud : reserve) {  noeud.setValeur(0);   noeud.setType(VAR);  }
-													ArrayList<Noeud> intermed = new ArrayList<Noeud>();
-													intermed.addAll(reserve);
-													reserve.clean();
-													RESULT = intermed;  :}      // glob entier i; ou glob entier i,j;
-		| GLOB ENTIER parametreD EG expression PV 				// glob entier i = x+y...
+declarationVar ::= GLOB ENTIER parametreD:paramD PV 	{: for(Noeud n : paramD) { 
+															tds.ajouterSymbole(new Symbole(n.getNom(),Scope.GLOB)); 
+														} 
+														RESULT = paramD; :}  
+													    
+		| GLOB ENTIER parametreD:paramD EG expression:expr PV 	{: 	ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+																for(Noeud n : paramD) { 
+																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.GLOB));  
+																	Noeud egal = new Noeud("",Type.EGAL,null);
+																	egal.ajoutFils(n);
+																	egal.ajoutFils(expr);
+																	intermed.add(egal);
+																	}
+																RESULT = intermed; 
+																:}			
 		;
 
 //Représente la déclaration d'une variable locale 
-declarationVarLoc ::= LOC ENTIER parametreD PV	{: for(noeud : reserve) {  noeud.setValeur(0);   noeud.setType(VAR);  }
-													ArrayList<Noeud> intermed = new ArrayList<Noeud>();
-													intermed.addAll(reserve);
-													reserve.clean();
-													RESULT = intermed;  :} 
-													
-		| LOC ENTIER parametreD EG expression:expr PV	
-/*
-{:
-int i = 0;
-for(noeud : reserve) {  
-	noeud.setValeur(0);   
-	noeud.setType(VAR);
-	i++;
-	}
-ArrayList<Noeud> intermed = new ArrayList<Noeud>();
-intermed.addAll(reserve);
-reserve.clean();
-RESULT = intermed; :}
-
-*/
+declarationVarLoc ::= LOC ENTIER parametreD:paramD PV		{: for(Noeud n : paramD) { 
+																tds.ajouterSymbole(new Symbole(n.getNom(),Scope.LOC)); 
+															} 
+															RESULT = paramD; :}
+															
+		| LOC ENTIER parametreD:paramD EG expression:expr PV	{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+																for(Noeud n : paramD) { 
+																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.LOC)); 
+																	Noeud egal = new Noeud("",Type.EGAL,null);
+																	egal.ajoutFils(n);
+																	egal.ajoutFils(expr);
+																	intermed.add(egal);
+																}
+																RESULT = intermed; :}
 		;
 
 
 //Represente les methodes du programme
-declarationFonc ::= FONCTION ENTIER NOM PO parametreF PF AO block AF
-			| FONCTION NOM PO parametreF PF AO block AF
-			| FONCTION ENTIER NOM PO PF AO block AF
-			| FONCTION NOM PO PF AO block AF
-			| FONCTION PRINC PO PF AO block AF
+declarationFonc ::= FONCTION ENTIER NOM:nom PO parametreF:paramF PF AO block:block AF	{: Noeud f = new Noeud (nom,Type.FONCT,null);
+																					tds.ajouterSymbole(new Symbole(nom,Scope.FONCT));
+																			f.ajoutFils(block);
+																			ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+																			intermed.addAll(paramF);
+																			intermed.add(f);
+																			RESULT = intermed; :}
+																			
+			| FONCTION NOM:nom PO parametreF:paramF PF AO block:block AF	{: Noeud f = new Noeud (nom,Type.FONCT,null);
+																		tds.ajouterSymbole(new Symbole(nom,Scope.FONCT));
+																		f.ajoutFils(block);
+																		ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+																		intermed.addAll(paramF);
+																		intermed.add(f);
+																		RESULT = intermed; :}
+																		
+			| FONCTION ENTIER NOM:nom PO PF AO block:block AF			{: Noeud f = new Noeud (nom,Type.FONCT,null);
+																		tds.ajouterSymbole(new Symbole(nom,Scope.FONCT));
+																		f.ajoutFils(block);
+																		ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+																		intermed.add(f);
+																		RESULT = intermed; :}
+																		
+			| FONCTION NOM:nom PO PF AO block:block AF					{: Noeud f = new Noeud (nom,Type.FONCT,null);
+																		tds.ajouterSymbole(new Symbole(nom,Scope.FONCT));
+																		f.ajoutFils(block);
+																		ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+																		intermed.add(f);
+																		RESULT = intermed; :}
+																		
+			| FONCTION PRINC PO PF AO block:block AF					{: Noeud f = new Noeud ("principale",Type.PRINC,null);
+																		tds.ajouterSymbole(new Symbole("principale",Scope.PRINC));
+																		f.ajoutFils(block);
+																		ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+																		intermed.add(f);
+																		RESULT = intermed; :}
 			;	
 			
 //Représente les variables décrite lors de leurs déclaration (ex : "glob entier i;" OU "glob entier	i, j, k;")
-parametreD ::= NOM:nom V parametreD:param 	{: reserve.add(new Noeud(nom,null,null);
-											reserve.addAll(param); :}
-			| NOM:nom						{: reserve.add(new Noeud(nom,null,null)) :}
+parametreD ::= NOM:nom V parametreD:paramD 	{: ArrayList<Noeud> intermed = new ArrayList<Noeud>(); 
+											intermed.add(new Noeud(nom,Type.VAR,0));
+											intermed.addAll(paramD); 
+											RESULT = intermed; :}
+											
+			| NOM:nom						{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();  
+											intermed.add(new Noeud(nom,Type.VAR,0));
+											RESULT = intermed; :}
 			;
 
 
+
 //Paramètres d'une méthode 
-parametreF ::=  ENTIER NOM V parametreF 
-		| ENTIER NOM
+parametreF ::=  ENTIER NOM:nom V parametreF:paramF 	{: ArrayList<Noeud> intermed = new ArrayList<Noeud>(); 
+													tds.ajouterSymbole(new Symbole(nom,Scope.LOC)); 
+													intermed.add(new Noeud(nom,Type.VAR,0));
+													intermed.addAll(paramF); 
+													RESULT = intermed; :}
+													
+		| ENTIER NOM:nom					{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+											tds.ajouterSymbole(new Symbole(nom,Scope.LOC));  
+											intermed.add(new Noeud(nom,Type.VAR,0));
+											RESULT = intermed; :}
 		;
 
+
 //affectation d'une variable 
-affectation ::= NOM EG expression PV
+affectation ::= NOM:nom EG expression:expr PV 	{: Noeud egal = new Noeud("",Type.EGAL,null);
+												egal.ajoutFils(new Noeud(nom,Type.VAR,0));
+												egal.ajoutFils(expr);
+												RESULT = egal; :}
 
 		;
 // SI .. ALORS / SINON .. ALORS
-conditionnelle ::= SI PO condition PF AO block AF
-		| SI PO condition PF AO block AF SINON AO block AF
+conditionnelle ::= SI PO condition:condition PF AO block:block AF 	{: Noeud si = new Noeud("",Type.SI,null);
+																	si.ajoutFils(condition);
+																	si.ajoutFils(block);
+																	RESULT = si; :}
+		| SI PO condition:condition PF AO block:block1 AF SINON AO block:block2 AF 	{: Noeud si = new Noeud("",Type.SI,null);
+																						si.ajoutFils(condition);
+																						si.ajoutFils(block1);
+																						si.ajoutFils(new Noeud("",Type.SINON,null));
+																						si.ajoutFils(block2);
+																						RESULT = si;:}
 		;
 
 // le TANT QUE ...
-boucle ::= TQ PO condition PF AO block AF
+boucle ::= TQ PO condition:condition PF AO block:block AF	{: Noeud boucle = new Noeud("",Type.TANTQUE,null);
+															boucle.ajoutFils(condition);
+															boucle.ajoutFils(block);
+															RESULT = boucle;:}
 		;
 		
 // conditions booleennes dans un SI 
-condition ::= expression OPBOOL expression 
+condition ::= expression:expr1 OPBOOL:op expression:expr2 	{: Noeud opbool = new Noeud(op,Type.CONDITION,null);
+															opbool.ajoutFils(expr1);
+															opbool.ajoutFils(expr2);
+															RESULT = opbool; :}
 		;
 
 //fonction écriture 
-ecrire ::= ECRIRE PO expression:expr PF PV {: Noeud ecrire = new Noeud(null,ECRIRE,null);
+ecrire ::= ECRIRE PO expression:expr PF PV {: Noeud ecrire = new Noeud("",Type.ECRIRE,null);
 											ecrire.ajoutFils(expr);
 											RESULT = ecrire; :}
 		;
 
-//fonction lecture
-lire ::= LIRE PO PF {: RESULT == new Noeud(null,LIRE,null); :}
-		; 
-
 
 //fonction return
-retourner ::= RET expression PV
+retourner ::= RET expression:expr PV 		{: Noeud retour = new Noeud("",Type.RETURN,null);
+											retour.ajoutFils(expr); 
+											RESULT = retour; :}	
 		;
 		
 //l'appel de fonction
-appelFonc ::= APPEL NOM PO parametreA PF
+appelFonc ::= APPEL NOM:nom PO parametreA:paramA PF {: Noeud appel = new Noeud (nom,Type.APPEL,null);
+													appel.ajoutFils(paramA);
+													RESULT = appel; :}
 		;
 
 // les arguments d'une fonction
-parametreA ::= expression V parametreA
-		| expression
-		|	
+parametreA ::= expression:expr V parametreA:paramA 		{: ArrayList<Noeud> intermed = new ArrayList<Noeud>(); 
+														intermed.add(expr);
+														intermed.addAll(paramA);
+														RESULT = intermed; :}
+														
+		| expression:expr								{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();  
+														intermed.add(expr);
+														RESULT = intermed; :}
+		|	{: RESULT = new ArrayList<Noeud>(); :}
 		;
 
 
 // une expression : ici on gère les + et les - facteur est utilisé pour la priorité des opérations
-expression ::= expression:expr PLUS facteur:facteur	{: Noeud plus = new Noeud(null,PLUS,null);
+expression ::= expression:expr PLUS facteur:facteur	{: Noeud plus = new Noeud(null,Type.ADD,null);
 													plus.ajoutFils((Noeud)expr);
 													plus.ajoutFils((Noeud)facteur);
 													RESULT = plus; :}
-		| expression:expr MOINS facteur:facteur 	{: Noeud moins = new Noeud(null,MOINS,null);
+													
+		| expression:expr MOINS facteur:facteur 	{: Noeud moins = new Noeud(null,Type.MOINS,null);
 													moins.ajoutFils((Noeud)expr);
 													moins.ajoutFils((Noeud)facteur);
 													RESULT = moins; :}
+													
 		| facteur:facteur							{: RESULT = (Noeud)facteur; :}
 		;
 		
+	
 //gère les * et les /		on décompose encore plus une expression pour arriver a atome
-facteur ::= facteur:facteur MUL atome:a 	{: Noeud mul = new Noeud(null,MUL,null);
-											mul.ajoutFils((Noeud)facteur);
-											mul.ajoutFils((Noeud)a);
+facteur ::= facteur:facteur MUL atome:a 	{: Noeud mul = new Noeud(null,Type.MUL,null);
+											mul.ajoutFils(facteur);
+											mul.ajoutFils(a);
 											RESULT = mul; :}
-		| facteur:facteur DIV atome:a   	{: Noeud div = new Noeud(null,DIV,null);
-											div.ajoutFils((Noeud)facteur);
-											div.ajoutFils((Noeud)a);
+											
+		| facteur:facteur DIV atome:a   	{: Noeud div = new Noeud(null,Type.DIV,null);
+											div.ajoutFils(facteur);
+											div.ajoutFils(a);
 											RESULT = div; :}
+											
 		| atome:a 							{: RESULT = (Noeud)a; :}
 		;
 		
+		
+		
 // tous les éléments simples , gère aussi les parenthèses 
-atome ::= NOM:nom {: RESULT = new Noeud ("nom",VAR,null) :}
-		| NUM:num {: RESULT = new Noeud (null,CONSTANTE, num) :}
-		| PO expression:expr PF {: RESULT = (Noeud)expr:}
-		| appelFonc {::}
-		| lire {: RESULT = new Noeud ("lire",LIRE,null) :}
+atome ::= NOM:nom {: RESULT = new Noeud (nom,Type.VAR,null); :}
+		| NUM:num {: RESULT = new Noeud (null,Type.CONSTANTE, Integer.parseInt(num)); :}
+		| PO expression:expr PF {: RESULT = expr; :}
+		| appelFonc:appel {: RESULT = appel; :}
+		| LIRE PO PF {: RESULT = new Noeud("lire",Type.LIRE,null); :}
 		;
 	 	

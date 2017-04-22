@@ -43,7 +43,7 @@ OPBOOL = ==|<|>|<=|>=|\!=|\!
 ";"			{ return new Symbol(sym.PV); }
 ","			{ return new Symbol(sym.V); }
 "ecrire"	{ return new Symbol(sym.ECRIRE); }
-"lire"	{ return new Symbol(sym.LIRE); }
+"lire"	 { return new Symbol(sym.LIRE); }
 "tantQue"	{ return new Symbol(sym.TQ); }
 "si"		{ return new Symbol(sym.SI); }
 "sinon"		{ return new Symbol(sym.SINON); }
@@ -54,10 +54,10 @@ OPBOOL = ==|<|>|<=|>=|\!=|\!
 "fonction"	{ return new Symbol(sym.FONCTION); }
 "principal"	{ return new Symbol(sym.PRINC); }
 "appel"		{ return new Symbol(sym.APPEL); }
-{NUM}		{ return new Symbol(sym.NUM); }
-{NOM}		{ return new Symbol(sym.NOM); }
+{NUM}		{ return new Symbol(sym.NUM, yytext()); }
+{NOM}		{ return new Symbol(sym.NOM, yytext()); }
 {COM}		{ return new Symbol(sym.COM); }
-{OPBOOL}	{ return new Symbol(sym.OPBOOL);}
+{OPBOOL}	{ return new Symbol(sym.OPBOOL, yytext());}
 {SEP}		{ ; }
 
 .			{ return null; }

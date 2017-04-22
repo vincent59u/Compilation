@@ -217,7 +217,7 @@ public class GenerateurUASM {
 	}
 
 	public void generer_expression(Noeud ast){
-		if (ast.getType() == Type.CONST){
+		if (ast.getType() == Type.CONSTANTE){
 			if(ast.getNom() != ""){
 				if (this.tds.getSymbole(ast.getNom()).getScope() == Scope.GLOB){
 					res += "\nCMOVE(" + this.tds.getSymbole(ast.getNom()).getValeur() + ",R0)";
