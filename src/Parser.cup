@@ -87,13 +87,14 @@ declarationVar ::= GLOB ENTIER parametreD:paramD PV 	{: for(Noeud n : paramD) {
 														} 
 														RESULT = paramD; :}  
 													    
-		| GLOB ENTIER parametreD:paramD EG expression:expr PV 	{: 	ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+		| GLOB ENTIER parametreD:paramD EG NUM:num PV 	{: 	ArrayList<Noeud> intermed = new ArrayList<Noeud>();
 																for(Noeud n : paramD) { 
-																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.GLOB));  
-																	Noeud egal = new Noeud("",Type.EGAL,null);
-																	egal.ajoutFils(n);
-																	egal.ajoutFils(expr);
-																	intermed.add(egal);
+																	n.setValeur(Integer.parseInt(num));
+																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.GLOB,Integer.parseInt(num)));  
+																	//Noeud egal = new Noeud("",Type.EGAL,null);
+																	//egal.ajoutFils(n);
+																	//egal.ajoutFils(expr);
+																	intermed.add(n);
 																	}
 																RESULT = intermed; 
 																:}			
@@ -105,21 +106,23 @@ declarationVarLoc ::= LOC ENTIER parametreD:paramD PV		{: for(Noeud n : paramD) 
 															} 
 															RESULT = paramD; :}
 															
-		| LOC ENTIER parametreD:paramD EG expression:expr PV	{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
+		| LOC ENTIER parametreD:paramD EG NUM:num PV 	{: 	ArrayList<Noeud> intermed = new ArrayList<Noeud>();
 																for(Noeud n : paramD) { 
-																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.LOC)); 
-																	Noeud egal = new Noeud("",Type.EGAL,null);
-																	egal.ajoutFils(n);
-																	egal.ajoutFils(expr);
-																	intermed.add(egal);
-																}
-																RESULT = intermed; :}
+																	n.setValeur(Integer.parseInt(num));
+																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.GLOB,Integer.parseInt(num)));  
+																	//Noeud egal = new Noeud("",Type.EGAL,null);
+																	//egal.ajoutFils(n);
+																	//egal.ajoutFils(expr);
+																	intermed.add(n);
+																	}
+																RESULT = intermed; 
+																:}
 		;
 
 
 //Represente les methodes du programme
 declarationFonc ::= FONCTION ENTIER NOM:nom PO parametreF:paramF PF AO block:block AF	{: Noeud f = new Noeud (nom,Type.FONCT,null);
-																					tds.ajouterSymbole(new Symbole(nom,Scope.FONCT));
+																					tds.ajouterSymbole(new Symbole(nom,Scope.FONCT,"ENTIER"));
 																			f.ajoutFils(block);
 																			ArrayList<Noeud> intermed = new ArrayList<Noeud>();
 																			intermed.addAll(paramF);
@@ -135,7 +138,7 @@ declarationFonc ::= FONCTION ENTIER NOM:nom PO parametreF:paramF PF AO block:blo
 																		RESULT = intermed; :}
 																		
 			| FONCTION ENTIER NOM:nom PO PF AO block:block AF			{: Noeud f = new Noeud (nom,Type.FONCT,null);
-																		tds.ajouterSymbole(new Symbole(nom,Scope.FONCT));
+																		tds.ajouterSymbole(new Symbole(nom,Scope.FONCT,"ENTIER"));
 																		f.ajoutFils(block);
 																		ArrayList<Noeud> intermed = new ArrayList<Noeud>();
 																		intermed.add(f);
@@ -184,7 +187,7 @@ parametreF ::=  ENTIER NOM:nom V parametreF:paramF 	{: ArrayList<Noeud> intermed
 
 
 //affectation d'une variable 
-affectation ::= NOM:nom EG expression:expr PV 	{: Noeud egal = new Noeud("",Type.EGAL,null);
+affectation ::= NOM:nom EG expression:expr PV 	{: Noeud egal = new Noeud("",Type.AFFECTATION,null);
 												egal.ajoutFils(new Noeud(nom,Type.VAR,0));
 												egal.ajoutFils(expr);
 												RESULT = egal; :}
@@ -196,7 +199,6 @@ conditionnelle ::= SI PO condition:condition PF AO block:block AF 	{: Noeud si =
 																	Noeud b = new Noeud("",Type.BLOCK,null);
 																	b.ajoutFils(block);
 																	si.ajoutFils(b);
-																	System.out.println(si.listeFils.size());
 																	RESULT = si; :}
 		| SI PO condition:condition PF AO block:block1 AF SINON AO block:block2 AF 	{: Noeud si = new Noeud("",Type.SI,null);
 																						si.ajoutFils(condition);
@@ -206,7 +208,6 @@ conditionnelle ::= SI PO condition:condition PF AO block:block AF 	{: Noeud si =
 																						b = new Noeud("",Type.BLOCK,null);
 																						b.ajoutFils(block2);
 																						si.ajoutFils(b);
-																						System.out.println(si.listeFils.size());
 																						RESULT = si;:}
 		;
 

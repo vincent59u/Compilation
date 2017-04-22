@@ -8,6 +8,17 @@ i: LONG(0)
 j: LONG(0)
 principal :
 :
+a=0
+x=0
+b=0
+PUSH(LP)
+PUSH(BP)
+MOVE(SP,BP)
+ALLOCATE(0)
+:
+a=0
+x=0
+b=0
 PUSH(LP)
 PUSH(BP)
 MOVE(SP,BP)

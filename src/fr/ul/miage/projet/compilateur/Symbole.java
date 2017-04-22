@@ -9,6 +9,7 @@ public class Symbole {
 	protected String nom;
 	protected Scope scope;
 	protected int valeur;
+	protected String retour;
 	
 	/**
 	 * Premier constructeur de la classe Symbole
@@ -31,6 +32,12 @@ public class Symbole {
 		this.nom = nom;
 		this.scope = scope;
 		this.valeur = valeur;
+	}
+	
+	public Symbole(String nom, Scope scope, String retour){
+		this.nom = nom;
+		this.scope = scope;
+		this.retour = retour;
 	}
 
 	/**

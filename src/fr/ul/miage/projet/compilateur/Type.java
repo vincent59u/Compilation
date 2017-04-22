@@ -20,7 +20,6 @@ public enum Type {
 	VAR,
 	CONSTANTE,
 	PROG,
-	EGAL,
 	CONDITION,
 	ECRIRE,
 	BLOCK,

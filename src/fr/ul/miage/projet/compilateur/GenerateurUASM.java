@@ -46,7 +46,7 @@ public class GenerateurUASM {
 		// Partie qui contien le code du programme
 		res += "\nprincipal :";
 		// On parcours tous les fils du noeud prog
-		for(Noeud noeud : this.ast.getListeFils()){
+		for(Noeud noeud : ast.getListeFils()){
 			// Si le ou les fil(s) sont des fonction, on génère le code de celles-ci.
 			if(noeud.getType() == Type.FONCT || noeud.getType() == Type.PRINC){
 				generer_fonction(ast);	
@@ -74,12 +74,14 @@ public class GenerateurUASM {
 	
 	public void generer_fonction(Noeud ast){
 		res += "\n" + ast.getNom() + ":";
+		//System.out.println(res);
 		generer_data_loc();
 		res += "\nPUSH(LP)";
 		res += "\nPUSH(BP)";
 		res += "\nMOVE(SP,BP)";
 		res += "\nALLOCATE(" + ast.getListeFils().get(0).getListeFils().size() + ")";
 		for (Noeud n : ast.getListeFils()){
+			System.out.println(ast.getType());
 			generer_instruction(n);
 		}
 		if(ast.getType() == Type.FONCT){
@@ -103,6 +105,7 @@ public class GenerateurUASM {
 			// Si c'est une variable global, on l'ajoute à la partie des datas
 			if (symbole.getScope() == Scope.LOC){  
 				res += "\n" + symbole.getNom() + "=" + symbole.getValeur();
+				System.out.println(res);
 			}
 		}
 	}
@@ -118,6 +121,7 @@ public class GenerateurUASM {
 	public void generer_instruction(Noeud ast){
 		switch(ast.getType()){
 			case AFFECTATION :
+				System.out.println("test");
 				generer_affectation(ast);
 				break;
 			case APPEL :
@@ -165,28 +169,34 @@ public class GenerateurUASM {
 		generer_expression(ast.getListeFils().get(1));
 		
 		res+= "\nPOP(R1)";
-		res+= "\nPOP(R2)";
+		res+= "\nPOP(R0)";
 		
 		switch ((String)ast.getValeur()) {
 		case "<" :
-			res += "\nCMPEQ(R1,R2,R0)";
+			res += "\nCMPLT(R0,R1,R0)";
 			res += "\nPUSH(R0)";
 			break;
 		case ">" :
-			res += "\nCMPEQ(R1,R2,R0)";
-			res += "\nX0RC(R0,-1,R0)";
+			res += "\nCMPLT(R1,R0,R0)";
+			//res += "\nCMPEQ(R1,R2,R0)";
+			//res += "\nX0RC(R0,-1,R0)";
 			res += "\nPUSH(R0)";
 			break;
-		case "=" :
-			res += "\nCMPLT(R1,R2,R0)";
+		case "==" :
+			res += "\nCMPEQ(R0,R1,R0)";
 			res += "\nPUSH(R0)";
 			break;
 		case "<=" :
-			//TODO
+			res += "\nCMPLE(R0,R1,R0)";
+			res += "\nPUSH(R0)";
 			break;
 		case ">=" :
-			//TODO
+			res += "\nCMPLE(R1,R0,R0)";
+			res += "\nPUSH(R0)";
 			break;
+		case "!=" :
+			res += "\nCMPEQ(R0,R1,R0)";
+			res += "\nX0RC(R0,1,R0)";
 		}
 	}
 
