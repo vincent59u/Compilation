@@ -8,13 +8,13 @@ import java.util.Map.Entry;
  * @authors Matthieu VINCENT, Martin LEMAITRE, Loic REISDOERFER, Mervine LIEFFROY.
  */
 public class TableDesSymboles {
-	protected HashMap<Integer, Symbole> tds;
+	protected HashMap<String, Symbole> tds;
 	
 	/**
 	 * Constructeur de la classe TDS qui permet d'initialiser un HashMap.
 	 */
 	public TableDesSymboles(){
-		this.tds = new HashMap<Integer, Symbole>();
+		this.tds = new HashMap<String, Symbole>();
 	}
 	
 	/**
@@ -22,14 +22,14 @@ public class TableDesSymboles {
 	 * @param sym
 	 */
 	public void ajouterSymbole(Symbole sym){
-		this.tds.put(this.tds.size(), sym);
+		this.tds.put("#" + this.tds.size(), sym);
 	}
 	
 	/**
 	 * Méthode qui permet de supprimer une entrée dans la table des symboles
 	 * @param clef
 	 */
-	public void supprimerSymbole(int clef){
+	public void supprimerSymbole(String clef){
 		this.tds.remove(clef);
 	}
 	
@@ -39,8 +39,8 @@ public class TableDesSymboles {
 	 */
 	public void supprimerSymbole(Symbole sym){
 		// On pacours la TDS tant que nous n'avons pas trouvé le symbole
-		for(Entry<Integer, Symbole> entry : this.tds.entrySet()) {
-		    int clef = entry.getKey();
+		for(Entry<String, Symbole> entry : this.tds.entrySet()) {
+		    String clef = entry.getKey();
 		    Symbole symbole = entry.getValue();
 		    // Si le symbole à supprimer se trouve dans la table
 		    if(symbole.getNom() == sym.getNom() && symbole.getScope() == sym.getScope()){
@@ -57,7 +57,7 @@ public class TableDesSymboles {
 	 * @param clef
 	 * @return Symbole
 	 */
-	public Symbole getSymbole(int clef){
+	public Symbole getSymbole(String clef){
 		return this.tds.get(clef);
 	}
 	
@@ -68,8 +68,8 @@ public class TableDesSymboles {
 	 */
 	public Symbole getSymbole(Symbole sym){
 		// On pacours la TDS tant que nous n'avons pas trouvé le symbole
-		for(Entry<Integer, Symbole> entry : this.tds.entrySet()) {
-		    int clef = entry.getKey();
+		for(Entry<String, Symbole> entry : this.tds.entrySet()) {
+		    String clef = entry.getKey();
 		    Symbole symbole = entry.getValue();
 		    // Si le symbole à supprimer se trouve dans la table
 		    if(symbole.getNom() == sym.getNom() && symbole.getScope() == sym.getScope()){
@@ -85,7 +85,7 @@ public class TableDesSymboles {
 	 * Getter qui permet de retourner la table des symboles
 	 * @return tds
 	 */
-	public HashMap<Integer, Symbole> getTds() {
+	public HashMap<String, Symbole> getTds() {
 		return tds;
 	}
 
@@ -93,7 +93,7 @@ public class TableDesSymboles {
 	 * Setter qui permet de modifier la table des symboles
 	 * @param tds
 	 */
-	public void setTds(HashMap<Integer, Symbole> tds) {
+	public void setTds(HashMap<String, Symbole> tds) {
 		this.tds = tds;
 	}
 	

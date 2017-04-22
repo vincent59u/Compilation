@@ -5,9 +5,14 @@ package fr.ul.miage.projet.compilateur;
  * @authors Matthieu VINCENT, Martin LEMAITRE, Loic REISDOERFER, Mervine LIEFFROY.
  */
 public enum Type {
+	PROG,
 	PRINC,
 	FONCT,
+	BLOC,
+	EGAL,
 	RETURN,
+	NUM,
+	CONST,
 	APPEL,
 	AFFECTATION,
 	ADD,
@@ -15,6 +20,8 @@ public enum Type {
 	MOINS,
 	DIV,
 	SI,
+	SINON,
+	COND,
 	TANTQUE,
 	POUR,
 	LIRE,

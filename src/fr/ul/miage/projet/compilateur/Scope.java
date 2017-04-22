@@ -7,6 +7,6 @@ package fr.ul.miage.projet.compilateur;
 public enum Scope {
 	GLOB,
 	LOC,
-	FONCTION,
+	FONCT,
 	PRINC;
 }
