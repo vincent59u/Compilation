@@ -15,7 +15,6 @@ public enum Type {
 	MOINS,
 	DIV,
 	SI,
-	SINON,
 	TANTQUE,
 	LIRE,
 	VAR,
@@ -24,5 +23,6 @@ public enum Type {
 	EGAL,
 	CONDITION,
 	ECRIRE,
+	BLOCK,
 	NUM;
 }

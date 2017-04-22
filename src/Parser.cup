@@ -193,20 +193,29 @@ affectation ::= NOM:nom EG expression:expr PV 	{: Noeud egal = new Noeud("",Type
 // SI .. ALORS / SINON .. ALORS
 conditionnelle ::= SI PO condition:condition PF AO block:block AF 	{: Noeud si = new Noeud("",Type.SI,null);
 																	si.ajoutFils(condition);
-																	si.ajoutFils(block);
+																	Noeud b = new Noeud("",Type.BLOCK,null);
+																	b.ajoutFils(block);
+																	si.ajoutFils(b);
+																	System.out.println(si.listeFils.size());
 																	RESULT = si; :}
 		| SI PO condition:condition PF AO block:block1 AF SINON AO block:block2 AF 	{: Noeud si = new Noeud("",Type.SI,null);
 																						si.ajoutFils(condition);
-																						si.ajoutFils(block1);
-																						si.ajoutFils(new Noeud("",Type.SINON,null));
-																						si.ajoutFils(block2);
+																						Noeud b = new Noeud("",Type.BLOCK,null);
+																						b.ajoutFils(block1);
+																						si.ajoutFils(b);
+																						b = new Noeud("",Type.BLOCK,null);
+																						b.ajoutFils(block2);
+																						si.ajoutFils(b);
+																						System.out.println(si.listeFils.size());
 																						RESULT = si;:}
 		;
 
 // le TANT QUE ...
 boucle ::= TQ PO condition:condition PF AO block:block AF	{: Noeud boucle = new Noeud("",Type.TANTQUE,null);
 															boucle.ajoutFils(condition);
-															boucle.ajoutFils(block);
+															Noeud b = new Noeud("",Type.BLOCK,null);
+															b.ajoutFils(block);
+															boucle.ajoutFils(b);
 															RESULT = boucle;:}
 		;
 		

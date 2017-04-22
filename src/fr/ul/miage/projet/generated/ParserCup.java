@@ -318,6 +318,8 @@ class CUP$ParserCup$actions {
 
 //@@CUPDBG0
 
+	int compteurSi = 0;
+	int compteurTantQue = 0;
 	TableDesSymboles tds = new TableDesSymboles();
 
   private final ParserCup parser;
@@ -854,7 +856,10 @@ class CUP$ParserCup$actions {
 		//@@CUPDBG29
  Noeud si = new Noeud("",Type.SI,null);
 																	si.ajoutFils(condition);
-																	si.ajoutFils(block);
+																	Noeud b = new Noeud("",Type.BLOCK,null);
+																	b.ajoutFils(block);
+																	si.ajoutFils(b);
+																	System.out.println(si.listeFils.size());
 																	RESULT = si; 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("conditionnelle",12, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-6)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
@@ -876,9 +881,13 @@ class CUP$ParserCup$actions {
 		//@@CUPDBG30
  Noeud si = new Noeud("",Type.SI,null);
 																						si.ajoutFils(condition);
-																						si.ajoutFils(block1);
-																						si.ajoutFils(new Noeud("",Type.SINON,null));
-																						si.ajoutFils(block2);
+																						Noeud b = new Noeud("",Type.BLOCK,null);
+																						b.ajoutFils(block1);
+																						si.ajoutFils(b);
+																						b = new Noeud("",Type.BLOCK,null);
+																						b.ajoutFils(block2);
+																						si.ajoutFils(b);
+																						System.out.println(si.listeFils.size());
 																						RESULT = si;
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("conditionnelle",12, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-10)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
@@ -897,7 +906,9 @@ class CUP$ParserCup$actions {
 		//@@CUPDBG31
  Noeud boucle = new Noeud("",Type.TANTQUE,null);
 															boucle.ajoutFils(condition);
-															boucle.ajoutFils(block);
+															Noeud b = new Noeud("",Type.BLOCK,null);
+															b.ajoutFils(block);
+															boucle.ajoutFils(b);
 															RESULT = boucle;
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("boucle",14, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-6)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
