@@ -36,9 +36,11 @@ public class GenerateurUASM {
 	 * @param ast
 	 */
 	public void genererProg(Noeud ast){
-		res += "\nCMOVE(pile, SP)"
-			   + "\nCALL(principal)"
-			   + "\nHALT()";
+		res +=  "\n.include beta.uasm"
+				+ "\n.include intio.uasm"
+				+ "\nCMOVE(pile, SP)"
+			    + "\nCALL(principal)"
+			    + "\nHALT()";
 		// Permet de générer l'ensemble des données utiles au programme
 		generer_data();
 		// Partie qui contien le code du programme
@@ -59,9 +61,9 @@ public class GenerateurUASM {
 	 */
 	public void generer_data(){
 		// On parcours tous les éléments de la table des symboles
-		for (Entry<Integer, Symbole> entry : this.tds.getTds().entrySet()){
+		for (Entry<String, Symbole> entry : this.tds.getTds().entrySet()){
 			// On récupère les informations utiles au data
-			Integer clef = entry.getKey();
+			String clef = entry.getKey();
 			Symbole symbole = entry.getValue(); 
 			// Si c'est une variable global, on l'ajoute à la partie des datas
 			if (symbole.getScope() == Scope.GLOB){  
@@ -94,9 +96,9 @@ public class GenerateurUASM {
 	
 	public void generer_data_loc(){
 		// On parcours tous les éléments de la table des symboles
-		for (Entry<Integer, Symbole> entry : this.tds.getTds().entrySet()){
+		for (Entry<String, Symbole> entry : this.tds.getTds().entrySet()){
 			// On récupère les informations utiles au data
-			Integer clef = entry.getKey();
+			String clef = entry.getKey();
 			Symbole symbole = entry.getValue(); 
 			// Si c'est une variable global, on l'ajoute à la partie des datas
 			if (symbole.getScope() == Scope.LOC){  
@@ -142,11 +144,66 @@ public class GenerateurUASM {
 	}
 
 	public void generer_tantQue(Noeud ast){
-		// TODO Auto-generated method stub
+		res += "\nBR(" + ast.getNom() + ")";
+		res += "\n" + ast.getNom() + ":";
+		generer_condition(ast.getListeFils().get(0));
+		res+= "\nPOP(R0)";
+		res+= "\nBF(R0,fin" + ast.getNom() +")";
+		generer_bloc(ast.getListeFils().get(1));
+		res+= "\nBR(" + ast.getNom() + ")";
+		res+= "\nfin" + ast.getNom() + ":";
+	}
+
+	private void generer_bloc(Noeud ast) {
+		for (Noeud n : ast.getListeFils()){
+			generer_instruction(n);			
+		}
+	}
+
+	private void generer_condition(Noeud ast) {
+		generer_expression(ast.getListeFils().get(0));
+		generer_expression(ast.getListeFils().get(1));
+		
+		res+= "\nPOP(R1)";
+		res+= "\nPOP(R2)";
+		
+		switch ((String)ast.getValeur()) {
+		case "<" :
+			res += "\nCMPEQ(R1,R2,R0)";
+			res += "\nPUSH(R0)";
+			break;
+		case ">" :
+			res += "\nCMPEQ(R1,R2,R0)";
+			res += "\nX0RC(R0,-1,R0)";
+			res += "\nPUSH(R0)";
+			break;
+		case "=" :
+			res += "\nCMPLT(R1,R2,R0)";
+			res += "\nPUSH(R0)";
+			break;
+		case "<=" :
+			//TODO
+			break;
+		case ">=" :
+			//TODO
+			break;
+		}
 	}
 
 	public void generer_si(Noeud ast){
-		// TODO Auto-generated method stub
+		res += "\n" + (String)ast.getValeur() + ":";
+	    generer_condition(ast.getListeFils().get(0));
+		res += "\nPOP(R0)";
+		if(ast.getListeFils().size()>2){
+			res += "\nBF(R0,sinon" + (String)ast.getValeur() +")";
+		}
+		generer_bloc(ast.getListeFils().get(1));		
+		if(ast.getListeFils().size()>2){
+			res += "\nBR(finsi" + (String)ast.getValeur() + ")";
+			res += "\nsinon" + (String)ast.getValeur() + ":";
+			generer_bloc(ast.getListeFils().get(2));
+		}
+		res+= "\nfinsi" + (String)ast.getValeur()+":";
 	}
 
 	public void generer_appel(Noeud ast) {
@@ -154,14 +211,71 @@ public class GenerateurUASM {
 	}
 
 	public void generer_affectation(Noeud ast){
-		// TODO Auto-generated method stub
+		generer_expression(ast.getListeFils().get(1));
+		res += "\nPOP(R0)";
+		res += "\nST(R0," + ast.getListeFils().get(0).getValeur() + ")";
 	}
 
 	public void generer_expression(Noeud ast){
-		//TODO
+		if (ast.getType() == Type.CONST){
+			if(ast.getNom() != ""){
+				if (this.tds.getSymbole(ast.getNom()).getScope() == Scope.GLOB){
+					res += "\nCMOVE(" + this.tds.getSymbole(ast.getNom()).getValeur() + ",R0)";
+					res += "\nPUSH(R0)";
+				}else if (this.tds.getSymbole(ast.getNom()).getScope()  == Scope.LOC){
+						res += "\nGETFRAME("+ this.tds.getSymbole(ast.getNom()).getValeur() +",R0)";
+						res += "\nPUSH(R0)";				
+				}
+			}else{
+				res += "\nGETFRAME("+ ast.getValeur() +",R0)";
+				res += "\nPUSH(R0)";	
+			}
+		}else if (ast.getType() == Type.NUM) {
+			res += "\nLD(" + ast.getValeur()+ ", R0)" ;
+			res += "\nPUSH(R0)";	
+		
+		}else if (ast.getType() == Type.ADD){
+			generer_expression (ast.getListeFils().get(0));
+			generer_expression (ast.getListeFils().get(1));
+			res += "\nPOP(R0)";
+			res += "\nPOP(R1)";
+			res += "\nADD(R0,R1,R2)";
+			res += "\nPUSH(R2)";		
+		}else if (ast.getType() == Type.MOINS){
+			generer_expression (ast.getListeFils().get(0));
+		    generer_expression (ast.getListeFils().get(1));
+			res += "\nPOP(R0)";
+			res += "\nPOP(R1)";
+			res += "\nSUB(R0,R1,R2)";
+			res += "\nPUSH(R2)";
+		}else if (ast.getType() == Type.MUL){
+			generer_expression (ast.getListeFils().get(0));
+			generer_expression (ast.getListeFils().get(1));
+			res += "\nPOP(R0)";
+			res += "\nPOP(R1)";
+			res += "\nMUL(R0,R1,R2)";
+			res += "\nPUSH(R2)";
+		}else if(ast.getType() == Type.DIV){
+			generer_expression (ast.getListeFils().get(0));
+			generer_expression (ast.getListeFils().get(1));
+			res += "\nPOP(R0)";
+			res += "\nPOP(R1)";
+			res += "\nDIV(R0,R1,R2)";
+			res += "\nPUSH(R2)";
+		}else if (ast.getType() == Type.APPEL){
+			generer_fonction(ast.getListeFils().get(1));
+			res += "\nPOP(R0)";
+			res += "\nPUSH(R0)";
+			generer_appel(ast);
+		}else if (ast.getType() == Type.LIRE){
+			generer_lire(ast);
+			res += "\nPOP(R0)";
+			res += "\nPUSH(R0)";
+		}
 	}
 	
-	public void generer_lire(){
+	public void generer_lire(Noeud ast){
+		generer_expression(ast.getListeFils().get(0));
 		res+= "\nPOP(R0)";
 		res+= "\nRDINT()";
 	}
