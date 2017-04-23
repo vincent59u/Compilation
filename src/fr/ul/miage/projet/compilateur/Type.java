@@ -17,7 +17,6 @@ public enum Type {
 	SI,
 	TANTQUE,
 	LIRE,
-	VAR,
 	CONSTANTE,
 	PROG,
 	CONDITION,

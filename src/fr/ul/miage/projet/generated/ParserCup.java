@@ -766,7 +766,7 @@ class CUP$ParserCup$actions {
 		ArrayList<Noeud> paramD = (ArrayList<Noeud>)((java_cup.runtime.Symbol) CUP$ParserCup$stack.peek()).value;
 		//@@CUPDBG24
  ArrayList<Noeud> intermed = new ArrayList<Noeud>(); 
-											intermed.add(new Noeud(nom,Type.VAR,0));
+											intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 											intermed.addAll(paramD); 
 											RESULT = intermed; 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("parametreD",6, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-2)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
@@ -782,7 +782,7 @@ class CUP$ParserCup$actions {
 		String nom = (String)((java_cup.runtime.Symbol) CUP$ParserCup$stack.peek()).value;
 		//@@CUPDBG25
  ArrayList<Noeud> intermed = new ArrayList<Noeud>();  
-											intermed.add(new Noeud(nom,Type.VAR,0));
+											intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 											RESULT = intermed; 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("parametreD",6, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
@@ -801,7 +801,7 @@ class CUP$ParserCup$actions {
 		//@@CUPDBG26
  ArrayList<Noeud> intermed = new ArrayList<Noeud>(); 
 													tds.ajouterSymbole(new Symbole(nom,Scope.LOC)); 
-													intermed.add(new Noeud(nom,Type.VAR,0));
+													intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 													intermed.addAll(paramF); 
 													RESULT = intermed; 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("parametreF",7, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-3)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
@@ -818,7 +818,7 @@ class CUP$ParserCup$actions {
 		//@@CUPDBG27
  ArrayList<Noeud> intermed = new ArrayList<Noeud>();
 											tds.ajouterSymbole(new Symbole(nom,Scope.LOC));  
-											intermed.add(new Noeud(nom,Type.VAR,0));
+											intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 											RESULT = intermed; 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("parametreF",7, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
@@ -836,7 +836,7 @@ class CUP$ParserCup$actions {
 		Noeud expr = (Noeud)((java_cup.runtime.Symbol) CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).value;
 		//@@CUPDBG28
  Noeud egal = new Noeud("",Type.AFFECTATION,null);
-												egal.ajoutFils(new Noeud(nom,Type.VAR,0));
+												egal.ajoutFils(new Noeud(nom,Type.CONSTANTE,0));
 												egal.ajoutFils(expr);
 												RESULT = egal; 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("affectation",18, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-3)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
@@ -1136,7 +1136,7 @@ class CUP$ParserCup$actions {
 		int nomright = ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()).right;
 		String nom = (String)((java_cup.runtime.Symbol) CUP$ParserCup$stack.peek()).value;
 		//@@CUPDBG45
- RESULT = new Noeud (nom,Type.VAR,null); 
+ RESULT = new Noeud (nom,Type.CONSTANTE,null); 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("atome",10, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
           return CUP$ParserCup$result;
@@ -1149,7 +1149,7 @@ class CUP$ParserCup$actions {
 		int numright = ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()).right;
 		String num = (String)((java_cup.runtime.Symbol) CUP$ParserCup$stack.peek()).value;
 		//@@CUPDBG46
- RESULT = new Noeud (null,Type.CONSTANTE, Integer.parseInt(num)); 
+ RESULT = new Noeud (null,Type.NUM, Integer.parseInt(num)); 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("atome",10, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
           return CUP$ParserCup$result;

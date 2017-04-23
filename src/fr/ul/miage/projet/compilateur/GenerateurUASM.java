@@ -49,7 +49,7 @@ public class GenerateurUASM {
 		for(Noeud noeud : ast.getListeFils()){
 			// Si le ou les fil(s) sont des fonction, on génère le code de celles-ci.
 			if(noeud.getType() == Type.FONCT || noeud.getType() == Type.PRINC){
-				generer_fonction(ast);	
+				generer_fonction(noeud);	
 			}
 		}
 		// On déclare la partie de la pile
@@ -81,7 +81,7 @@ public class GenerateurUASM {
 		res += "\nMOVE(SP,BP)";
 		res += "\nALLOCATE(" + ast.getListeFils().get(0).getListeFils().size() + ")";
 		for (Noeud n : ast.getListeFils()){
-			System.out.println(ast.getType());
+			System.out.println(n.getType());
 			generer_instruction(n);
 		}
 		if(ast.getType() == Type.FONCT){
@@ -228,19 +228,25 @@ public class GenerateurUASM {
 
 	public void generer_expression(Noeud ast){
 		if (ast.getType() == Type.CONSTANTE){
+			System.out.println("CONSTANTE");
 			if(ast.getNom() != ""){
+				System.out.println("" + "" + ast.getNom());
 				if (this.tds.getSymbole(ast.getNom()).getScope() == Scope.GLOB){
+					System.out.println("glob");
 					res += "\nCMOVE(" + this.tds.getSymbole(ast.getNom()).getValeur() + ",R0)";
 					res += "\nPUSH(R0)";
 				}else if (this.tds.getSymbole(ast.getNom()).getScope()  == Scope.LOC){
+					System.out.println("loc");
 						res += "\nGETFRAME("+ this.tds.getSymbole(ast.getNom()).getValeur() +",R0)";
 						res += "\nPUSH(R0)";				
 				}
+				System.out.println("test");
 			}else{
 				res += "\nGETFRAME("+ ast.getValeur() +",R0)";
 				res += "\nPUSH(R0)";	
 			}
 		}else if (ast.getType() == Type.NUM) {
+			System.out.println("num");
 			res += "\nLD(" + ast.getValeur()+ ", R0)" ;
 			res += "\nPUSH(R0)";	
 		

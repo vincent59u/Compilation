@@ -1,4 +1,3 @@
-
 /*
  * Projet de compilation L3 Miage :
  * Ecriture d'un compilateur
@@ -161,12 +160,12 @@ declarationFonc ::= FONCTION ENTIER NOM:nom PO parametreF:paramF PF AO block:blo
 			
 //Représente les variables décrite lors de leurs déclaration (ex : "glob entier i;" OU "glob entier	i, j, k;")
 parametreD ::= NOM:nom V parametreD:paramD 	{: ArrayList<Noeud> intermed = new ArrayList<Noeud>(); 
-											intermed.add(new Noeud(nom,Type.VAR,0));
+											intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 											intermed.addAll(paramD); 
 											RESULT = intermed; :}
 											
 			| NOM:nom						{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();  
-											intermed.add(new Noeud(nom,Type.VAR,0));
+											intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 											RESULT = intermed; :}
 			;
 
@@ -175,20 +174,20 @@ parametreD ::= NOM:nom V parametreD:paramD 	{: ArrayList<Noeud> intermed = new A
 //Paramètres d'une méthode 
 parametreF ::=  ENTIER NOM:nom V parametreF:paramF 	{: ArrayList<Noeud> intermed = new ArrayList<Noeud>(); 
 													tds.ajouterSymbole(new Symbole(nom,Scope.LOC)); 
-													intermed.add(new Noeud(nom,Type.VAR,0));
+													intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 													intermed.addAll(paramF); 
 													RESULT = intermed; :}
 													
 		| ENTIER NOM:nom					{: ArrayList<Noeud> intermed = new ArrayList<Noeud>();
 											tds.ajouterSymbole(new Symbole(nom,Scope.LOC));  
-											intermed.add(new Noeud(nom,Type.VAR,0));
+											intermed.add(new Noeud(nom,Type.CONSTANTE,0));
 											RESULT = intermed; :}
 		;
 
 
 //affectation d'une variable 
 affectation ::= NOM:nom EG expression:expr PV 	{: Noeud egal = new Noeud("",Type.AFFECTATION,null);
-												egal.ajoutFils(new Noeud(nom,Type.VAR,0));
+												egal.ajoutFils(new Noeud(nom,Type.CONSTANTE,0));
 												egal.ajoutFils(expr);
 												RESULT = egal; :}
 
@@ -291,8 +290,8 @@ facteur ::= facteur:facteur MUL atome:a 	{: Noeud mul = new Noeud(null,Type.MUL,
 		
 		
 // tous les éléments simples , gère aussi les parenthèses 
-atome ::= NOM:nom {: RESULT = new Noeud (nom,Type.VAR,null); :}
-		| NUM:num {: RESULT = new Noeud (null,Type.CONSTANTE, Integer.parseInt(num)); :}
+atome ::= NOM:nom {: RESULT = new Noeud (nom,Type.CONSTANTE,null); :}
+		| NUM:num {: RESULT = new Noeud (null,Type.NUM, Integer.parseInt(num)); :}
 		| PO expression:expr PF {: RESULT = expr; :}
 		| appelFonc:appel {: RESULT = appel; :}
 		| LIRE PO PF {: RESULT = new Noeud("lire",Type.LIRE,null); :}
