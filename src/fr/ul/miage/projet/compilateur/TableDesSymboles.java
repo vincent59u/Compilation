@@ -58,6 +58,7 @@ public class TableDesSymboles {
 	 * @return Symbole
 	 */
 	public Symbole getSymbole(String clef){
+		
 		return this.tds.get(clef);
 	}
 	
@@ -66,13 +67,13 @@ public class TableDesSymboles {
 	 * @param sym
 	 * @return Symbole
 	 */
-	public Symbole getSymbole(Symbole sym){
+	public Symbole findSymbole(String sym){
 		// On pacours la TDS tant que nous n'avons pas trouvé le symbole
 		for(Entry<String, Symbole> entry : this.tds.entrySet()) {
 		    String clef = entry.getKey();
 		    Symbole symbole = entry.getValue();
 		    // Si le symbole à supprimer se trouve dans la table
-		    if(symbole.getNom() == sym.getNom() && symbole.getScope() == sym.getScope()){
+		    if(symbole.getNom().equals(sym)){
 		    	// On le supprime
 		    	return this.getSymbole(clef);
 		    }   

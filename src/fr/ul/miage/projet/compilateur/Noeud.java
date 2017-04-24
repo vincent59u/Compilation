@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Noeud {
 	protected String nom;
 	protected Type type;
-	protected Object valeur;
+	protected Integer valeur;
 	public ArrayList<Noeud> listeFils;
 	
 	/**
@@ -18,7 +18,7 @@ public class Noeud {
 	 * @param type
 	 * @param valeur
 	 */
-	public Noeud(String nom, Type type, Object valeur){
+	public Noeud(String nom, Type type, Integer valeur){
 		this.nom = nom;
 		this.type = type;
 		this.valeur = valeur;
@@ -155,7 +155,7 @@ public class Noeud {
 	 * Getter qui permet de retourner la valeur du noeud
 	 * @return valeur
 	 */
-	public Object getValeur() {
+	public Integer getValeur() {
 		return valeur;
 	}
 

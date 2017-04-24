@@ -74,15 +74,23 @@ public class GenerateurUASM {
 	
 	public void generer_fonction(Noeud ast){
 		res += "\n" + ast.getNom() + ":";
-		//System.out.println(res);
 		generer_data_loc();
 		res += "\nPUSH(LP)";
 		res += "\nPUSH(BP)";
 		res += "\nMOVE(SP,BP)";
-		res += "\nALLOCATE(" + ast.getListeFils().get(0).getListeFils().size() + ")";
+		res += "\nALLOCATE(" + ast.getListeFils().size() + ")";
 		for (Noeud n : ast.getListeFils()){
-			System.out.println(n.getType());
-			generer_instruction(n);
+			if(n.getListeFils().get(n.getListeFils().size() - 1).getType() == Type.RETURN){
+				res+="\nreturn_" + n.getValeur();
+				res+="\nDEALLOCATE(" + n.getListeFils().size() + ")";
+				res+="\nPOP(BP)";
+				res+="\nPOP(LP)";
+				res+="\nRTN()";
+				generer_retour(n.getListeFils().get(n.getListeFils().size() - 1));
+			}
+			else{
+				generer_instruction(n);
+			}			
 		}
 		if(ast.getType() == Type.FONCT){
 			if(ast.getListeFils().get(ast.getListeFils().size() - 1).getType() == Type.RETURN){
@@ -105,7 +113,6 @@ public class GenerateurUASM {
 			// Si c'est une variable global, on l'ajoute à la partie des datas
 			if (symbole.getScope() == Scope.LOC){  
 				res += "\n" + symbole.getNom() + "=" + symbole.getValeur();
-				System.out.println(res);
 			}
 		}
 	}
@@ -121,7 +128,6 @@ public class GenerateurUASM {
 	public void generer_instruction(Noeud ast){
 		switch(ast.getType()){
 			case AFFECTATION :
-				System.out.println("test");
 				generer_affectation(ast);
 				break;
 			case APPEL :
@@ -148,14 +154,14 @@ public class GenerateurUASM {
 	}
 
 	public void generer_tantQue(Noeud ast){
-		res += "\nBR(" + ast.getNom() + ")";
-		res += "\n" + ast.getNom() + ":";
+		res += "\nBR(boucle" + ast.getValeur() + ")";
+		res += "\nboucle" + ast.getValeur() + ":";
 		generer_condition(ast.getListeFils().get(0));
 		res+= "\nPOP(R0)";
-		res+= "\nBF(R0,fin" + ast.getNom() +")";
+		res+= "\nBF(R0,finboucle" + ast.getValeur() +")";
 		generer_bloc(ast.getListeFils().get(1));
-		res+= "\nBR(" + ast.getNom() + ")";
-		res+= "\nfin" + ast.getNom() + ":";
+		res+= "\nBR(boucle" + ast.getValeur() + ")";
+		res+= "\nfinboucle" + ast.getValeur() + ":";
 	}
 
 	private void generer_bloc(Noeud ast) {
@@ -171,7 +177,7 @@ public class GenerateurUASM {
 		res+= "\nPOP(R1)";
 		res+= "\nPOP(R0)";
 		
-		switch ((String)ast.getValeur()) {
+		switch (ast.getNom()) {
 		case "<" :
 			res += "\nCMPLT(R0,R1,R0)";
 			res += "\nPUSH(R0)";
@@ -201,19 +207,19 @@ public class GenerateurUASM {
 	}
 
 	public void generer_si(Noeud ast){
-		res += "\n" + (String)ast.getValeur() + ":";
+		res += "\nsi" + ast.getValeur() + ":";
 	    generer_condition(ast.getListeFils().get(0));
 		res += "\nPOP(R0)";
 		if(ast.getListeFils().size()>2){
-			res += "\nBF(R0,sinon" + (String)ast.getValeur() +")";
+			res += "\nBF(R0,sinon" + ast.getValeur() +")";
 		}
 		generer_bloc(ast.getListeFils().get(1));		
 		if(ast.getListeFils().size()>2){
-			res += "\nBR(finsi" + (String)ast.getValeur() + ")";
-			res += "\nsinon" + (String)ast.getValeur() + ":";
+			res += "\nBR(finsi" + ast.getValeur() + ")";
+			res += "\nsinon" + ast.getValeur() + ":";
 			generer_bloc(ast.getListeFils().get(2));
 		}
-		res+= "\nfinsi" + (String)ast.getValeur()+":";
+		res+= "\nfinsi" + ast.getValeur().toString()+":";
 	}
 
 	public void generer_appel(Noeud ast) {
@@ -228,25 +234,19 @@ public class GenerateurUASM {
 
 	public void generer_expression(Noeud ast){
 		if (ast.getType() == Type.CONSTANTE){
-			System.out.println("CONSTANTE");
 			if(ast.getNom() != ""){
-				System.out.println("" + "" + ast.getNom());
-				if (this.tds.getSymbole(ast.getNom()).getScope() == Scope.GLOB){
-					System.out.println("glob");
-					res += "\nCMOVE(" + this.tds.getSymbole(ast.getNom()).getValeur() + ",R0)";
+				if (this.tds.findSymbole(ast.getNom()).getScope() == Scope.GLOB){
+					res += "\nCMOVE(" + this.tds.findSymbole(ast.getNom()).getValeur() + ",R0)";
 					res += "\nPUSH(R0)";
-				}else if (this.tds.getSymbole(ast.getNom()).getScope()  == Scope.LOC){
-					System.out.println("loc");
-						res += "\nGETFRAME("+ this.tds.getSymbole(ast.getNom()).getValeur() +",R0)";
+				}else if (this.tds.findSymbole(ast.getNom()).getScope()  == Scope.LOC){
+						res += "\nGETFRAME("+ this.tds.findSymbole(ast.getNom()).getValeur() +",R0)";
 						res += "\nPUSH(R0)";				
 				}
-				System.out.println("test");
 			}else{
 				res += "\nGETFRAME("+ ast.getValeur() +",R0)";
 				res += "\nPUSH(R0)";	
 			}
 		}else if (ast.getType() == Type.NUM) {
-			System.out.println("num");
 			res += "\nLD(" + ast.getValeur()+ ", R0)" ;
 			res += "\nPUSH(R0)";	
 		
