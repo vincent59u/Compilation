@@ -234,7 +234,7 @@ ecrire ::= ECRIRE PO expression:expr PF PV {: Noeud ecrire = new Noeud("",Type.E
 
 
 //fonction return
-retourner ::= RET expression:expr PV 		{: Noeud retour = new Noeud("",Type.RETURN,null);
+retourner ::= RET expression:expr PV 		{: Noeud retour = new Noeud("retour",Type.RETURN,null);
 											retour.ajoutFils(expr); 
 											RESULT = retour; :}	
 		;

@@ -1,0 +1,83 @@
+---- Programme source traduit en assembleur beta ----
+.include beta.uasm
+.include intio.uasm
+CMOVE(pile, SP)
+CALL(principal)
+HALT()
+i: LONG(0)
+j: LONG(0)
+code :
+f:
+a=0
+x=0
+b=0
+PUSH(LP)
+PUSH(BP)
+MOVE(SP,BP)
+ALLOCATE(3)
+GETFRAME(0,R0)
+PUSH(R0)
+LD(2, R0)
+PUSH(R0)
+POP(R0)
+POP(R1)
+MUL(R0,R1,R2)
+PUSH(R2)
+GETFRAME(0,R0)
+PUSH(R0)
+POP(R0)
+POP(R1)
+ADD(R0,R1,R2)
+PUSH(R2)
+LD(5, R0)
+PUSH(R0)
+LD(3, R0)
+PUSH(R0)
+POP(R0)
+POP(R1)
+DIV(R0,R1,R2)
+PUSH(R2)
+POP(R0)
+POP(R1)
+SUB(R0,R1,R2)
+PUSH(R2)
+POP(R0)
+ST(R0,0)
+DEALLOCATE(1)
+POP(BP)
+POP(LP)
+RTN()
+GETFRAME(0,R0)
+PUSH(R0)
+POP(R0)
+PUTFRAME(R0,0)
+BR(null)
+principale:
+a=0
+x=0
+b=0
+PUSH(LP)
+PUSH(BP)
+MOVE(SP,BP)
+ALLOCATE(2)
+POP(R0)
+RDINT()
+POP(R0)
+PUSH(R0)
+POP(R0)
+ST(R0,0)
+null:
+a=0
+x=0
+b=0
+PUSH(LP)
+PUSH(BP)
+MOVE(SP,BP)
+ALLOCATE(2)
+POP(R0)
+PUSH(R0)
+CALL(f)
+POP(R0)
+WRINT()
+RTN()
+pileÂ :

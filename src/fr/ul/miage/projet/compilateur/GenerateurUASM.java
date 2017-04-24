@@ -44,7 +44,7 @@ public class GenerateurUASM {
 		// Permet de générer l'ensemble des données utiles au programme
 		generer_data();
 		// Partie qui contien le code du programme
-		res += "\nprincipal :";
+		res += "\ncode�:";
 		// On parcours tous les fils du noeud prog
 		for(Noeud noeud : ast.getListeFils()){
 			// Si le ou les fil(s) sont des fonction, on génère le code de celles-ci.
@@ -52,6 +52,7 @@ public class GenerateurUASM {
 				generer_fonction(noeud);	
 			}
 		}
+		res += "\nRTN()";
 		// On déclare la partie de la pile
 		res += "\npile :";
 	}
@@ -74,14 +75,14 @@ public class GenerateurUASM {
 	
 	public void generer_fonction(Noeud ast){
 		res += "\n" + ast.getNom() + ":";
+		
 		generer_data_loc();
 		res += "\nPUSH(LP)";
 		res += "\nPUSH(BP)";
 		res += "\nMOVE(SP,BP)";
 		res += "\nALLOCATE(" + ast.getListeFils().size() + ")";
 		for (Noeud n : ast.getListeFils()){
-			if(n.getListeFils().get(n.getListeFils().size() - 1).getType() == Type.RETURN){
-				res+="\nreturn_" + n.getValeur();
+			if(n.getType() == Type.RETURN){
 				res+="\nDEALLOCATE(" + n.getListeFils().size() + ")";
 				res+="\nPOP(BP)";
 				res+="\nPOP(LP)";
@@ -92,6 +93,7 @@ public class GenerateurUASM {
 				generer_instruction(n);
 			}			
 		}
+		/*
 		if(ast.getType() == Type.FONCT){
 			if(ast.getListeFils().get(ast.getListeFils().size() - 1).getType() == Type.RETURN){
 				res+="\nreturn_" + ast.getValeur();
@@ -101,7 +103,7 @@ public class GenerateurUASM {
 				res+="\nRTN()";
 				generer_retour(ast.getListeFils().get(ast.getListeFils().size() - 1));
 			}
-		}
+		}*/
 	}
 	
 	public void generer_data_loc(){
@@ -279,7 +281,7 @@ public class GenerateurUASM {
 			res += "\nDIV(R0,R1,R2)";
 			res += "\nPUSH(R2)";
 		}else if (ast.getType() == Type.APPEL){
-			generer_fonction(ast.getListeFils().get(1));
+			generer_fonction(ast.getListeFils().get(0));
 			res += "\nPOP(R0)";
 			res += "\nPUSH(R0)";
 			generer_appel(ast);
@@ -291,7 +293,6 @@ public class GenerateurUASM {
 	}
 	
 	public void generer_lire(Noeud ast){
-		generer_expression(ast.getListeFils().get(0));
 		res+= "\nPOP(R0)";
 		res+= "\nRDINT()";
 	}
