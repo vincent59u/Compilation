@@ -58,7 +58,6 @@ public class TableDesSymboles {
 	 * @return Symbole
 	 */
 	public Symbole getSymbole(String clef){
-		
 		return this.tds.get(clef);
 	}
 	

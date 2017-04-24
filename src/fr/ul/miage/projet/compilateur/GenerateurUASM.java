@@ -44,7 +44,7 @@ public class GenerateurUASM {
 		// Permet de générer l'ensemble des données utiles au programme
 		generer_data();
 		// Partie qui contien le code du programme
-		res += "\ncode�:";
+		res += "\ncode:";
 		// On parcours tous les fils du noeud prog
 		for(Noeud noeud : ast.getListeFils()){
 			// Si le ou les fil(s) sont des fonction, on génère le code de celles-ci.
@@ -66,6 +66,7 @@ public class GenerateurUASM {
 			// On récupère les informations utiles au data
 			String clef = entry.getKey();
 			Symbole symbole = entry.getValue(); 
+			//System.out.println("KEY:"+clef+"[name:"+symbole.getNom()+"|Scope:"+symbole.getScope()+"|value:"+symbole.getValeur()+"]");
 			// Si c'est une variable global, on l'ajoute à la partie des datas
 			if (symbole.getScope() == Scope.GLOB){  
 				res += "\n" + symbole.getNom() + ": LONG(" + symbole.getValeur() + ")";
@@ -93,17 +94,6 @@ public class GenerateurUASM {
 				generer_instruction(n);
 			}			
 		}
-		/*
-		if(ast.getType() == Type.FONCT){
-			if(ast.getListeFils().get(ast.getListeFils().size() - 1).getType() == Type.RETURN){
-				res+="\nreturn_" + ast.getValeur();
-				res+="\nDEALLOCATE(" + ast.getListeFils().size() + ")";
-				res+="\nPOP(BP)";
-				res+="\nPOP(LP)";
-				res+="\nRTN()";
-				generer_retour(ast.getListeFils().get(ast.getListeFils().size() - 1));
-			}
-		}*/
 	}
 	
 	public void generer_data_loc(){
@@ -120,11 +110,13 @@ public class GenerateurUASM {
 	}
 	
 	public void generer_retour(Noeud ast){
-		generer_expression(ast.getListeFils().get(0));
-		res+= "\nPOP(R0)";
-		int tmp = ast.getListeFils().get(0).getListeFils().size(); 		
-		res+= "\nPUTFRAME(R0,"+ tmp + ")";
-		res+= "\nBR("+ ast.getNom() + ")";
+		if(ast.getListeFils().size() > 0){
+			generer_expression(ast.getListeFils().get(0));
+			res+= "\nPOP(R0)";
+			int tmp = ast.getListeFils().get(0).getListeFils().size(); 		
+			res+= "\nPUTFRAME(R0,"+ tmp + ")";
+			res+= "\nBR("+ ast.getNom() + ")";
+		}
 	}
 	
 	public void generer_instruction(Noeud ast){

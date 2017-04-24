@@ -590,7 +590,7 @@ class CUP$ParserCup$actions {
  	ArrayList<Noeud> intermed = new ArrayList<Noeud>();
 																for(Noeud n : paramD) { 
 																	n.setValeur(Integer.parseInt(num));
-																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.GLOB,Integer.parseInt(num)));  
+																	tds.ajouterSymbole(new Symbole(n.getNom(),Scope.GLOB,Integer.parseInt(num)));
 																	//Noeud egal = new Noeud("",Type.EGAL,null);
 																	//egal.ajoutFils(n);
 																	//egal.ajoutFils(expr);
@@ -854,7 +854,7 @@ class CUP$ParserCup$actions {
 		int blockright = ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).right;
 		ArrayList<Noeud> block = (ArrayList<Noeud>)((java_cup.runtime.Symbol) CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).value;
 		//@@CUPDBG29
- Noeud si = new Noeud("",Type.SI,null);
+ Noeud si = new Noeud("",Type.SI,compteurSi++);
 																	si.ajoutFils(condition);
 																	Noeud b = new Noeud("",Type.BLOCK,null);
 																	b.ajoutFils(block);
@@ -878,7 +878,7 @@ class CUP$ParserCup$actions {
 		int block2right = ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).right;
 		ArrayList<Noeud> block2 = (ArrayList<Noeud>)((java_cup.runtime.Symbol) CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).value;
 		//@@CUPDBG30
- Noeud si = new Noeud("",Type.SI,null);
+ Noeud si = new Noeud("",Type.SI,compteurSi++);
 																						si.ajoutFils(condition);
 																						Noeud b = new Noeud("",Type.BLOCK,null);
 																						b.ajoutFils(block1);
@@ -902,7 +902,7 @@ class CUP$ParserCup$actions {
 		int blockright = ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).right;
 		ArrayList<Noeud> block = (ArrayList<Noeud>)((java_cup.runtime.Symbol) CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).value;
 		//@@CUPDBG31
- Noeud boucle = new Noeud("",Type.TANTQUE,null);
+ Noeud boucle = new Noeud("",Type.TANTQUE,compteurTantQue++);
 															boucle.ajoutFils(condition);
 															Noeud b = new Noeud("",Type.BLOCK,null);
 															b.ajoutFils(block);
@@ -957,7 +957,7 @@ class CUP$ParserCup$actions {
 		int exprright = ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).right;
 		Noeud expr = (Noeud)((java_cup.runtime.Symbol) CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-1)).value;
 		//@@CUPDBG34
- Noeud retour = new Noeud("",Type.RETURN,null);
+ Noeud retour = new Noeud("retour",Type.RETURN,null);
 											retour.ajoutFils(expr); 
 											RESULT = retour; 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("retourner",16, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.elementAt(CUP$ParserCup$top-2)), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
@@ -1136,7 +1136,7 @@ class CUP$ParserCup$actions {
 		int nomright = ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()).right;
 		String nom = (String)((java_cup.runtime.Symbol) CUP$ParserCup$stack.peek()).value;
 		//@@CUPDBG45
- RESULT = new Noeud (nom,Type.CONSTANTE,null); 
+ RESULT = new Noeud (nom,Type.CONSTANTE,tds.findSymbole(nom).getValeur()); 
               CUP$ParserCup$result = parser.getSymbolFactory().newSymbol("atome",10, ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserCup$stack.peek()), RESULT);
             }
           return CUP$ParserCup$result;
